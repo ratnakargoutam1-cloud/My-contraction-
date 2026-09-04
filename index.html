@@ -100,7 +100,8 @@
   </div>
 
   <script>
-    const SUPABASE_URL =
+    
+const SUPABASE_URL =
   "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
 const SUPABASE_KEY =
@@ -126,7 +127,6 @@ const SUPABASE_KEY =
         showMessage("Email aur password bhariye.");
         return;
       }
-
       const { data, error } =
         await supabaseClient.auth.signUp({
           email: email,
