@@ -1,56 +1,70 @@
-html>
+<!DOCTYPE html>
 <html lang="hi">
-<head><!DOCTYPE
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>My Construction</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f7fa;
-      text-align: center;
     }
 
     .header {
       background: #ff8c00;
       color: white;
       padding: 25px 15px;
+      text-align: center;
       border-radius: 0 0 25px 25px;
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 30px;
-    }
-
     .container {
-      padding: 30px 20px;
+      max-width: 450px;
+      margin: auto;
+      padding: 20px 15px;
     }
 
     .card {
       background: white;
-      padding: 25px;
-      margin: 15px auto;
-      max-width: 400px;
+      padding: 22px;
+      margin-top: 20px;
       border-radius: 18px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
-    button {
+    input, select, button {
       width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      border: none;
+      box-sizing: border-box;
+      padding: 13px;
+      margin-top: 10px;
       border-radius: 10px;
-      font-size: 17px;
-      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input, select {
+      border: 1px solid #ddd;
+    }
+
+    button {
+      border: none;
       background: #ff8c00;
       color: white;
+      cursor: pointer;
     }
 
     .secondary {
       background: #333;
+    }
+
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -58,6 +72,112 @@ html>
 <body>
 
   <div class="header">
-    <
-sb_p
-<title>
+    <h1>🏗️ My Construction</h1>
+    <p>Labour aur Thekedar ke liye</p>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>🔐 Login / Signup</h2>
+
+      <input id="email" type="email" placeholder="Email">
+
+      <input id="password" type="password" placeholder="Password">
+
+      <select id="role">
+        <option value="labour">👷 Labour</option>
+        <option value="thekedar">👷‍♂️ Thekedar</option>
+      </select>
+
+      <button onclick="signup()">Create Account</button>
+
+      <button class="secondary" onclick="login()">Login</button>
+
+      <div id="message"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const SUPABASE_URL =
+      "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+    const SUPABASE_KEY =
+      "YAHAN_APNI_PUBLISHABLE_KEY_PASTE_KARE";
+
+    const supabaseClient = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    async function signup() {
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const role =
+        document.getElementById("role").value;
+
+      if (!email || !password) {
+        showMessage("Email aur password bhariye.");
+        return;
+      }
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+
+          options: {
+            data: {
+              role: role
+            }
+          }
+        });
+
+      if (error) {
+        showMessage(error.message);
+        return;
+      }
+
+      showMessage("Account create ho gaya! 🎉");
+    }
+
+    async function login() {
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      if (!email || !password) {
+        showMessage("Email aur password bhariye.");
+        return;
+      }
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+        showMessage(error.message);
+        return;
+      }
+
+      showMessage("Login successful! ✅");
+    }
+
+    function showMessage(text) {
+      document.getElementById("message").innerText = text;
+    }
+  </script>
+
+</body>
+</html>
