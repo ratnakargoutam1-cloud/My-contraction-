@@ -86,9 +86,11 @@
       <input id="password" type="password" placeholder="Password">
 
       <select id="role">
-        <option value="labour">👷 Labour</option>
-        <option value="thekedar">👷‍♂️ Thekedar</option>
-      </select>
+  <option value="labour">👷 Labour</option>
+  <option value="thekedar">👷‍♂️ Thekedar</option>
+  <option value="client">🏠 Client</option>
+</select>
+      
 
       <button onclick="signup()">Create Account</button>
 
@@ -100,19 +102,18 @@
   </div>
 
   <script>
-    
-const SUPABASE_URL =
-  "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+    const SUPABASE_URL =
+      "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI
-
+    const SUPABASE_KEY =
+      
+sb_publishable_vaQ7SLsip1G0yLuqLLor8w_1pg0pz60
     const supabaseClient = supabase.createClient(
       SUPABASE_URL,
-      
-const SUPABASE_KEY =
-  "sb_publishable_...";
-    async function signup() {
+      SUPABASE_KEY
+    );
 
+    async function signup() {
       const email =
         document.getElementById("email").value.trim();
 
@@ -126,11 +127,11 @@ const SUPABASE_KEY =
         showMessage("Email aur password bhariye.");
         return;
       }
+
       const { data, error } =
         await supabaseClient.auth.signUp({
           email: email,
           password: password,
-
           options: {
             data: {
               role: role
@@ -147,7 +148,6 @@ const SUPABASE_KEY =
     }
 
     async function login() {
-
       const email =
         document.getElementById("email").value.trim();
 
