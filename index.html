@@ -10,31 +10,28 @@
 
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
-    }
-
-    .header {
-      background: #ff8c00;
-      color: white;
-      padding: 25px 15px;
-      text-align: center;
-      border-radius: 0 0 25px 25px;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
     }
 
     .container {
-      max-width: 450px;
+      max-width: 420px;
       margin: auto;
-      padding: 20px 15px;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    .card {
-      background: white;
-      padding: 22px;
-      margin-top: 20px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+
+    h2 {
+      text-align: center;
     }
 
     input, select, button {
@@ -42,141 +39,308 @@
       box-sizing: border-box;
       padding: 13px;
       margin-top: 10px;
-      border-radius: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
       font-size: 16px;
     }
 
-    input, select {
-      border: 1px solid #ddd;
-    }
-
     button {
-      border: none;
-      background: #ff8c00;
+      background: #1976d2;
       color: white;
+      border: none;
       cursor: pointer;
     }
 
-    .secondary {
-      background: #333;
+    button:hover {
+      background: #125ca3;
     }
 
-    #message {
+    .message {
       margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
       text-align: center;
-      font-weight: bold;
+      display: none;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tabs button {
+      margin-top: 0;
+    }
+
+    #loginBox {
+      display: none;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 45px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>🏗️ My Construction</h1>
-    <p>Labour aur Thekedar ke liye</p>
+<div class="container">
+
+  <div class="logo">🏗️</div>
+
+  <h1>My Construction</h1>
+
+  <div class="tabs">
+    <button onclick="showSignup()">Signup</button>
+    <button onclick="showLogin()">Login</button>
   </div>
 
-  <div class="container">
+  <!-- SIGNUP -->
+  <div id="signupBox">
 
-    <div class="card">
-      <h2>🔐 Login / Signup</h2>
+    <h2>Create Account</h2>
 
-      <input id="email" type="email" placeholder="Email">
+    <input
+      type="text"
+      id="signupName"
+      placeholder="आपका नाम"
+    >
 
-      <input id="password" type="password" placeholder="Password">
+    <input
+      type="tel"
+      id="signupMobile"
+      placeholder="Mobile Number"
+    >
 
-      <select id="role">
-  <option value="labour">👷 Labour</option>
-  <option value="thekedar">👷‍♂️ Thekedar</option>
-  <option value="client">🏠 Client</option>
-</select>
-      
+    <input
+      type="email"
+      id="signupEmail"
+      placeholder="Email"
+    >
 
-      <button onclick="signup()">Create Account</button>
+    <input
+      type="password"
+      id="signupPassword"
+      placeholder="Password"
+    >
 
-      <button class="secondary" onclick="login()">Login</button>
+    <select id="signupRole">
+      <option value="">Role चुनें</option>
+      <option value="labour">Labour</option>
+      <option value="thekedar">Thekedar</option>
+      <option value="client">Client</option>
+    </select>
 
-      <div id="message"></div>
-    </div>
+    <button onclick="signup()">Create Account</button>
+
+    <div id="signupMessage" class="message"></div>
 
   </div>
 
-  <script>
-    const SUPABASE_URL =
-  "https://xuzgsqaryonlvdwthapz.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI';
+  <!-- LOGIN -->
+  <div id="loginBox">
 
-    const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
- 
-    async function signup() {
-      const email =
-        document.getElementById("email").value.trim();
+    <h2>Login</h2>
 
-      const password =
-        document.getElementById("password").value;
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Email"
+    >
 
-      const role =
-        document.getElementById("role").value;
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Password"
+    >
 
-      if (!email || !password) {
-        showMessage("Email aur password bhariye.");
-        return;
-      }
+    <button onclick="login()">Login</button>
 
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-          email: email,
-          password: password,
-          options: {
-            data: {
-              role: role
-            }
-          }
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  // ==============================
+  // SUPABASE SETTINGS
+  // ==============================
+
+  const SUPABASE_URL =
+    "https://xuzgsqaryonlvdwthapz.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+  const supabaseClient =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  // ==============================
+  // TAB SWITCH
+  // ==============================
+
+  function showSignup() {
+    document.getElementById("signupBox").style.display = "block";
+    document.getElementById("loginBox").style.display = "none";
+  }
+
+  function showLogin() {
+    document.getElementById("signupBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "block";
+  }
+
+
+  // ==============================
+  // SIGNUP
+  // ==============================
+
+  async function signup() {
+
+    const name =
+      document.getElementById("signupName").value.trim();
+
+    const mobile =
+      document.getElementById("signupMobile").value.trim();
+
+    const email =
+      document.getElementById("signupEmail").value.trim();
+
+    const password =
+      document.getElementById("signupPassword").value;
+
+    const role =
+      document.getElementById("signupRole").value;
+
+    const message =
+      document.getElementById("signupMessage");
+
+
+    if (!name || !mobile || !email || !password || !role) {
+      message.style.display = "block";
+      message.innerText = "⚠️ सभी जानकारी भरें।";
+      return;
+    }
+
+
+    message.style.display = "block";
+    message.innerText = "⏳ Account बनाया जा रहा है...";
+
+
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      message.innerText =
+        "❌ " + error.message;
+
+      return;
+    }
+
+
+    if (!data.user) {
+
+      message.innerText =
+        "❌ Account create नहीं हुआ।";
+
+      return;
+    }
+
+
+    const { error: profileError } =
+      await supabaseClient
+        .from("Profiles")
+        .insert({
+          id: data.user.id,
+          Role: role,
+          Name: name,
+          Mobile: mobile
         });
 
-      if (error) {
-        showMessage(error.message);
-        return;
-      }
 
-      showMessage("Account create ho gaya! 🎉");
+    if (profileError) {
+
+      message.innerText =
+        "⚠️ Account बन गया, लेकिन profile save नहीं हुई: "
+        + profileError.message;
+
+      return;
     }
 
-    async function login() {
-      const email =
-        document.getElementById("email").value.trim();
 
-      const password =
-        document.getElementById("password").value;
+    message.innerText =
+      "✅ Account successfully created!";
 
-      if (!email || !password) {
-        showMessage("Email aur password bhariye.");
-        return;
-      }
+  }
 
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
 
-      if (error) {
-        showMessage(error.message);
-        return;
-      }
+  // ==============================
+  // LOGIN
+  // ==============================
 
-      showMessage("Login successful! ✅");
+  async function login() {
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+
+    if (!email || !password) {
+
+      message.style.display = "block";
+      message.innerText =
+        "⚠️ Email और Password भरें।";
+
+      return;
     }
 
-    function showMessage(text) {
-      document.getElementById("message").innerText = text;
+
+    message.style.display = "block";
+    message.innerText =
+      "⏳ Login हो रहा है...";
+
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      message.innerText =
+        "❌ " + error.message;
+
+      return;
     }
-  </script>
+
+
+    message.innerText =
+      "✅ Login successful!";
+
+  }
+
+</script>
 
 </body>
 </html>
