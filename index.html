@@ -6,9 +6,14 @@
 
   <title>My Construction</title>
 
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f4f6f8;
@@ -18,36 +23,48 @@
 
     .container {
       max-width: 420px;
-      margin: auto;
+      margin: 30px auto;
       background: white;
       padding: 25px;
       border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 50px;
     }
 
     h1 {
       text-align: center;
       color: #222;
+      margin-bottom: 25px;
     }
 
     h2 {
       text-align: center;
     }
 
-    input, select, button {
+    input,
+    select,
+    button {
       width: 100%;
-      box-sizing: border-box;
       padding: 13px;
       margin-top: 10px;
       border-radius: 8px;
-      border: 1px solid #ccc;
       font-size: 16px;
     }
 
+    input,
+    select {
+      border: 1px solid #ccc;
+      background: white;
+    }
+
     button {
+      border: none;
       background: #1976d2;
       color: white;
-      border: none;
       cursor: pointer;
     }
 
@@ -55,18 +72,10 @@
       background: #125ca3;
     }
 
-    .message {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      display: none;
-    }
-
     .tabs {
       display: flex;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .tabs button {
@@ -77,270 +86,334 @@
       display: none;
     }
 
-    .logo {
+    .message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
       text-align: center;
-      font-size: 45px;
+      background: #eef3f7;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="logo">🏗️</div>
+    <div class="logo">🏗️</div>
 
-  <h1>My Construction</h1>
+    <h1>My Construction</h1>
 
-  <div class="tabs">
-    <button onclick="showSignup()">Signup</button>
-    <button onclick="showLogin()">Login</button>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button type="button" onclick="showSignup()">Signup</button>
+      <button type="button" onclick="showLogin()">Login</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signupBox">
+
+      <h2>Create Account</h2>
+
+      <input
+        type="text"
+        id="signupName"
+        placeholder="आपका नाम"
+      >
+
+      <input
+        type="tel"
+        id="signupMobile"
+        placeholder="Mobile Number"
+      >
+
+      <input
+        type="email"
+        id="signupEmail"
+        placeholder="Email"
+      >
+
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="Password"
+      >
+
+      <select id="signupRole">
+        <option value="">Role चुनें</option>
+        <option value="labour">Labour</option>
+        <option value="thekedar">Thekedar</option>
+        <option value="client">Client</option>
+      </select>
+
+      <button type="button" onclick="signup()">
+        Create Account
+      </button>
+
+      <div id="signupMessage" class="message"></div>
+
+    </div>
+
+
+    <!-- LOGIN -->
+    <div id="loginBox">
+
+      <h2>Login</h2>
+
+      <input
+        type="email"
+        id="loginEmail"
+        placeholder="Email"
+      >
+
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+      >
+
+      <button type="button" onclick="login()">
+        Login
+      </button>
+
+      <div id="loginMessage" class="message"></div>
+
+    </div>
+
   </div>
 
-  <!-- SIGNUP -->
-  <div id="signupBox">
 
-    <h2>Create Account</h2>
+  <script>
 
-    <input
-      type="text"
-      id="signupName"
-      placeholder="आपका नाम"
-    >
+    // ==========================================
+    // SUPABASE
+    // ==========================================
 
-    <input
-      type="tel"
-      id="signupMobile"
-      placeholder="Mobile Number"
-    >
+    const SUPABASE_URL =
+      "https://xuzgsqaryonlvdwthapz.supabase.co";
 
-    <input
-      type="email"
-      id="signupEmail"
-      placeholder="Email"
-    >
+    const SUPABASE_KEY =
+      "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
 
-    <input
-      type="password"
-      id="signupPassword"
-      placeholder="Password"
-    >
-
-    <select id="signupRole">
-      <option value="">Role चुनें</option>
-      <option value="labour">Labour</option>
-      <option value="thekedar">Thekedar</option>
-      <option value="client">Client</option>
-    </select>
-
-    <button onclick="signup()">Create Account</button>
-
-    <div id="signupMessage" class="message"></div>
-
-  </div>
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
 
-  <!-- LOGIN -->
-  <div id="loginBox">
+    // ==========================================
+    // SHOW SIGNUP
+    // ==========================================
 
-    <h2>Login</h2>
+    function showSignup() {
 
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Email"
-    >
+      document.getElementById("signupBox").style.display = "block";
 
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Password"
-    >
-
-    <button onclick="login()">Login</button>
-
-    <div id="loginMessage" class="message"></div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-  // ==============================
-  // SUPABASE SETTINGS
-  // ==============================
-
-  const SUPABASE_URL =
-    "https://xuzgsqaryonlvdwthapz.supabase.co";
-
-  const SUPABASE_KEY =
-    "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
-
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-
-  // ==============================
-  // TAB SWITCH
-  // ==============================
-
-  function showSignup() {
-    document.getElementById("signupBox").style.display = "block";
-    document.getElementById("loginBox").style.display = "none";
-  }
-
-  function showLogin() {
-    document.getElementById("signupBox").style.display = "none";
-    document.getElementById("loginBox").style.display = "block";
-  }
-
-
-  // ==============================
-  // SIGNUP
-  // ==============================
-
-  async function signup() {
-
-    const name =
-      document.getElementById("signupName").value.trim();
-
-    const mobile =
-      document.getElementById("signupMobile").value.trim();
-
-    const email =
-      document.getElementById("signupEmail").value.trim();
-
-    const password =
-      document.getElementById("signupPassword").value;
-
-    const role =
-      document.getElementById("signupRole").value;
-
-    const message =
-      document.getElementById("signupMessage");
-
-
-    if (!name || !mobile || !email || !password || !role) {
-      message.style.display = "block";
-      message.innerText = "⚠️ सभी जानकारी भरें।";
-      return;
+      document.getElementById("loginBox").style.display = "none";
     }
 
 
-    message.style.display = "block";
-    message.innerText = "⏳ Account बनाया जा रहा है...";
+    // ==========================================
+    // SHOW LOGIN
+    // ==========================================
 
+    function showLogin() {
 
-    const { data, error } =
-      await supabaseClient.auth.signUp({
-        email: email,
-        password: password
-      });
+      document.getElementById("signupBox").style.display = "none";
 
-
-    if (error) {
-
-      message.innerText =
-        "❌ " + error.message;
-
-      return;
+      document.getElementById("loginBox").style.display = "block";
     }
 
 
-    if (!data.user) {
+    // ==========================================
+    // SIGNUP
+    // ==========================================
 
-      message.innerText =
-        "❌ Account create नहीं हुआ।";
+    async function signup() {
 
-      return;
-    }
+      const name =
+        document.getElementById("signupName").value.trim();
 
+      const mobile =
+        document.getElementById("signupMobile").value.trim();
 
-    const { error: profileError } =
-      await supabaseClient
-        .from("Profiles")
-        .insert({
-          id: data.user.id,
-          Role: role,
-          Name: name,
-          Mobile: mobile
-        });
+      const email =
+        document.getElementById("signupEmail").value.trim();
 
+      const password =
+        document.getElementById("signupPassword").value;
 
-    if (profileError) {
+      const role =
+        document.getElementById("signupRole").value;
 
-      message.innerText =
-        "⚠️ Account बन गया, लेकिन profile save नहीं हुई: "
-        + profileError.message;
+      const message =
+        document.getElementById("signupMessage");
 
-      return;
-    }
-
-
-    message.innerText =
-      "✅ Account successfully created!";
-
-  }
-
-
-  // ==============================
-  // LOGIN
-  // ==============================
-
-  async function login() {
-
-    const email =
-      document.getElementById("loginEmail").value.trim();
-
-    const password =
-      document.getElementById("loginPassword").value;
-
-    const message =
-      document.getElementById("loginMessage");
-
-
-    if (!email || !password) {
 
       message.style.display = "block";
-      message.innerText =
-        "⚠️ Email और Password भरें।";
 
-      return;
+
+      if (!name || !mobile || !email || !password || !role) {
+
+        message.innerText =
+          "⚠️ कृपया सभी जानकारी भरें।";
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        message.innerText =
+          "⚠️ Password कम से कम 6 characters का होना चाहिए।";
+
+        return;
+      }
+
+
+      message.innerText =
+        "⏳ Account बनाया जा रहा है...";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+
+          message.innerText =
+            "❌ " + error.message;
+
+          return;
+        }
+
+
+        if (!data.user) {
+
+          message.innerText =
+            "❌ Account create नहीं हुआ।";
+
+          return;
+        }
+
+
+        const { error: profileError } =
+          await supabaseClient
+            .from("Profiles")
+            .insert({
+
+              id: data.user.id,
+
+              Role: role,
+
+              Name: name,
+
+              Mobile: mobile
+
+            });
+
+
+        if (profileError) {
+
+          message.innerText =
+            "⚠️ Account बन गया, लेकिन Profile save नहीं हुई: "
+            + profileError.message;
+
+          return;
+        }
+
+
+        message.innerText =
+          "✅ Account successfully created!";
+
+
+      } catch (err) {
+
+        message.innerText =
+          "❌ Connection error: " + err.message;
+
+      }
+
     }
 
 
-    message.style.display = "block";
-    message.innerText =
-      "⏳ Login हो रहा है...";
+    // ==========================================
+    // LOGIN
+    // ==========================================
+
+    async function login() {
+
+      const email =
+        document.getElementById("loginEmail").value.trim();
+
+      const password =
+        document.getElementById("loginPassword").value;
+
+      const message =
+        document.getElementById("loginMessage");
 
 
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+      message.style.display = "block";
 
 
-    if (error) {
+      if (!email || !password) {
+
+        message.innerText =
+          "⚠️ Email और Password भरें।";
+
+        return;
+      }
+
 
       message.innerText =
-        "❌ " + error.message;
+        "⏳ Login हो रहा है...";
 
-      return;
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+
+          message.innerText =
+            "❌ " + error.message;
+
+          return;
+        }
+
+
+        message.innerText =
+          "✅ Login successful!";
+
+
+      } catch (err) {
+
+        message.innerText =
+          "❌ Connection error: " + err.message;
+
+      }
+
     }
 
-
-    message.innerText =
-      "✅ Login successful!";
-
-  }
-
-</script>
+  </script>
 
 </body>
 </html>
