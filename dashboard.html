@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Construction Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    /* HEADER */
+
+    .header {
+      background: #1976d2;
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .menu-button {
+      background: transparent;
+      color: white;
+      border: none;
+      font-size: 28px;
+      padding: 0;
+      width: auto;
+      margin: 0;
+    }
+
+    /* MENU */
+
+    .menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      max-width: 85%;
+      height: 100%;
+      background: white;
+      z-index: 100;
+      box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .menu h2 {
+      margin-top: 10px;
+    }
+
+    .menu button {
+      width: 100%;
+      padding: 14px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 8px;
+      background: #f0f2f5;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    .close-menu {
+      text-align: right !important;
+      background: transparent !important;
+      font-size: 24px !important;
+    }
+
+    /* MAIN */
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .welcome h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .welcome p {
+      margin: 0;
+      color: #666;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      background: white;
+      padding: 15px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    /* HOME BUILDING */
+
+    .home-card {
+      background: #fff3cd;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ffe69c;
+    }
+
+    .home-card h2 {
+      margin-top: 0;
+    }
+
+    .home-card button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #f59f00;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* CATEGORIES */
+
+    .section-title {
+      margin: 20px 0 12px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .category {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .category .icon {
+      font-size: 38px;
+    }
+
+    .category h3 {
+      margin: 8px 0 4px;
+      font-size: 17px;
+    }
+
+    .category p {
+      margin: 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .category button {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 7px;
+      background: #1976d2;
+      color: white;
+      font-size: 14px;
+    }
+
+    /* MESSAGE */
+
+    #message {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      max-width: 500px;
+      margin: auto;
+      background: #222;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 200;
+    }
+
+    @media (min-width: 600px) {
+      .categories {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="logo">
+      🏗️ My Construction
+    </div>
+
+    <button class="menu-button" onclick="openMenu()">
+      ☰
+    </button>
+
+  </header>
+
+
+  <!-- SIDE MENU -->
+
+  <div id="menu" class="menu">
+
+    <button class="close-menu" onclick="closeMenu()">✕</button>
+
+    <h2>☰ Menu</h2>
+
+    <button onclick="menuAction('Create Labour')">
+      ➕ Create Labour
+    </button>
+
+    <button onclick="menuAction('Edit Profile')">
+      👤 Edit Profile
+    </button>
+
+    <button onclick="menuAction('Live Location / Address')">
+      📍 Live Location / Address
+    </button>
+
+    <button onclick="menuAction('AI Help Line')">
+      🤖 AI Help Line
+    </button>
+
+    <button onclick="menuAction('My Bookings')">
+      📅 My Bookings
+    </button>
+
+    <button onclick="menuAction('Notifications')">
+      🔔 Notifications
+    </button>
+
+    <button onclick="menuAction('Settings')">
+      ⚙️ Settings
+    </button>
+
+    <button onclick="logout()">
+      🚪 Logout
+    </button>
+
+  </div>
+
+
+  <!-- MAIN -->
+
+  <main class="container">
+
+    <section class="welcome">
+
+      <h1>🏠 Welcome to My Construction</h1>
+
+      <p>
+        Labour, Thekedar और Construction Professionals
+        को आसानी से खोजें और Book करें।
+      </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <section class="search-box">
+
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="🔎 Labour, Thekedar, Electrician आदि खोजें..."
+        oninput="searchCategories()"
+      >
+
+    </section>
+
+
+    <!-- HOUSE BUILDING -->
+
+    <section class="home-card">
+
+      <h2>🏠 मेरा घर बनाना है</h2>
+
+      <p>
+        Plot details डालें और construction cost,
+        material estimate और house planning की जानकारी पाएँ।
+      </p>
+
+      <button onclick="startHomePlan()">
+        🏠 Start My House Planning
+      </button>
+
+    </section>
+
+
+    <h2 class="section-title">
+      👷 Construction Professionals
+    </h2>
+
+
+    <!-- CATEGORIES -->
+
+    <section class="categories" id="categories">
+
+      <div class="category" data-name="labour">
+        <div class="icon">👷</div>
+        <h3>Labour</h3>
+        <p>काम करने वाले Labour</p>
+        <button onclick="bookCategory('Labour')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="thekedar contractor">
+        <div class="icon">👷‍♂️</div>
+        <h3>Thekedar</h3>
+        <p>Contractor / Thekedar</p>
+        <button onclick="bookCategory('Thekedar')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="electrician">
+        <div class="icon">⚡</div>
+        <h3>Electrician</h3>
+        <p>Electrical work</p>
+        <button onclick="bookCategory('Electrician')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="plumber">
+        <div class="icon">🚰</div>
+        <h3>Plumber</h3>
+        <p>Plumbing work</p>
+        <button onclick="bookCategory('Plumber')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="painter">
+        <div class="icon">🎨</div>
+        <h3>Painter</h3>
+        <p>Painting work</p>
+        <button onclick="bookCategory('Painter')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="mason raj mistri">
+        <div class="icon">🧱</div>
+        <h3>Mason</h3>
+        <p>Raj Mistri / Mason</p>
+        <button onclick="bookCategory('Mason')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="carpenter">
+        <div class="icon">🪚</div>
+        <h3>Carpenter</h3>
+        <p>Wood work</p>
+        <button onclick="bookCategory('Carpenter')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="house designer architect">
+        <div class="icon">📐</div>
+        <h3>House Designer</h3>
+        <p>House plan / Design</p>
+        <button onclick="bookCategory('House Designer')">
+          Book Now
+        </button>
+      </div>
+
+
+      <div class="category" data-name="other professional">
+        <div class="icon">🔧</div>
+        <h3>Other</h3>
+        <p>Other professionals</p>
+        <button onclick="bookCategory('Other')">
+          Book Now
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- MESSAGE -->
+
+  <div id="message"></div>
+
+
+  <script>
+
+    function openMenu() {
+      document.getElementById("menu").style.display = "block";
+    }
+
+
+    function closeMenu() {
+      document.getElementById("menu").style.display = "none";
+    }
+
+
+    function showMessage(text) {
+
+      const message =
+        document.getElementById("message");
+
+      message.innerText = text;
+      message.style.display = "block";
+
+      setTimeout(function() {
+        message.style.display = "none";
+      }, 2500);
+    }
+
+
+    function menuAction(name) {
+
+      closeMenu();
+
+      showMessage(
+        "🔧 " + name + " feature जल्द जोड़ा जाएगा।"
+      );
+    }
+
+
+    function bookCategory(category) {
+
+      showMessage(
+        "📅 " + category +
+        " की booking/search screen अगले step में आएगी।"
+      );
+    }
+
+
+    function startHomePlan() {
+
+      showMessage(
+        "🏠 House Planning feature अगले step में खुलेगा।"
+      );
+    }
+
+
+    function searchCategories() {
+
+      const search =
+        document
+          .getElementById("searchInput")
+          .value
+          .toLowerCase()
+          .trim();
+
+      const cards =
+        document.querySelectorAll(".category");
+
+
+      cards.forEach(function(card) {
+
+        const name =
+          card.getAttribute("data-name");
+
+        if (name.includes(search)) {
+
+          card.style.display = "block";
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+    }
+
+
+    function logout() {
+
+      closeMenu();
+
+      const confirmLogout =
+        confirm("क्या आप Logout करना चाहते हैं?");
+
+      if (confirmLogout) {
+
+        window.location.href = "index.html";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
