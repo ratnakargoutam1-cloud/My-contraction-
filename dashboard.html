@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>My Construction Dashboard</title>
+  <title>My Construction - Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -18,9 +20,7 @@
       color: #222;
     }
 
-    /* HEADER */
-
-    .header {
+    header {
       background: #1976d2;
       color: white;
       padding: 15px;
@@ -32,193 +32,183 @@
       z-index: 10;
     }
 
-    .logo {
-      font-size: 21px;
-      font-weight: bold;
+    header h2 {
+      margin: 0;
+      font-size: 20px;
     }
 
-    .menu-button {
-      background: transparent;
-      color: white;
-      border: none;
-      font-size: 28px;
-      padding: 0;
+    .menu-btn {
       width: auto;
       margin: 0;
-    }
-
-    /* MENU */
-
-    .menu {
-      display: none;
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 280px;
-      max-width: 85%;
-      height: 100%;
+      padding: 8px 12px;
       background: white;
-      z-index: 100;
-      box-shadow: -4px 0 15px rgba(0,0,0,0.2);
-      padding: 20px;
-      overflow-y: auto;
+      color: #1976d2;
+      font-size: 22px;
     }
-
-    .menu h2 {
-      margin-top: 10px;
-    }
-
-    .menu button {
-      width: 100%;
-      padding: 14px;
-      margin: 6px 0;
-      border: none;
-      border-radius: 8px;
-      background: #f0f2f5;
-      text-align: left;
-      font-size: 16px;
-    }
-
-    .close-menu {
-      text-align: right !important;
-      background: transparent !important;
-      font-size: 24px !important;
-    }
-
-    /* MAIN */
 
     .container {
-      max-width: 900px;
+      max-width: 600px;
       margin: auto;
-      padding: 18px;
+      padding: 15px;
     }
 
     .welcome {
       background: white;
+      padding: 18px;
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
     }
 
-    .welcome h1 {
-      margin: 0 0 8px;
-      font-size: 25px;
-    }
-
-    .welcome p {
-      margin: 0;
-      color: #666;
-    }
-
-    /* SEARCH */
-
-    .search-box {
-      background: white;
-      padding: 15px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    /* HOME BUILDING */
-
-    .home-card {
-      background: #fff3cd;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid #ffe69c;
-    }
-
-    .home-card h2 {
+    .welcome h3 {
       margin-top: 0;
     }
 
-    .home-card button {
+    .search {
       width: 100%;
       padding: 14px;
-      border: none;
-      border-radius: 9px;
-      background: #f59f00;
-      color: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
       font-size: 16px;
-      font-weight: bold;
+      margin-bottom: 15px;
     }
 
-    /* CATEGORIES */
-
-    .section-title {
-      margin: 20px 0 12px;
+    .house-card {
+      background: white;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
     }
 
-    .categories {
+    .house-card h3 {
+      margin-top: 0;
+    }
+
+    .category-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
 
     .category {
       background: white;
+      padding: 15px;
       border-radius: 14px;
-      padding: 18px 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .category .icon {
-      font-size: 38px;
+      font-size: 35px;
     }
 
     .category h3 {
-      margin: 8px 0 4px;
-      font-size: 17px;
+      font-size: 16px;
+      margin: 8px 0;
     }
 
-    .category p {
-      margin: 0;
-      color: #777;
-      font-size: 13px;
-    }
-
-    .category button {
-      margin-top: 12px;
-      padding: 10px 14px;
+    button {
+      width: 100%;
+      padding: 11px;
       border: none;
-      border-radius: 7px;
+      border-radius: 8px;
       background: #1976d2;
       color: white;
-      font-size: 14px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 8px;
     }
 
-    /* MESSAGE */
+    .green {
+      background: #2e7d32;
+    }
 
-    #message {
+    .red {
+      background: #c62828;
+    }
+
+    .side-menu {
       display: none;
       position: fixed;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      max-width: 500px;
-      margin: auto;
-      background: #222;
-      color: white;
-      padding: 14px;
-      border-radius: 10px;
-      text-align: center;
-      z-index: 200;
+      right: 10px;
+      top: 65px;
+      width: 240px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.2);
+      z-index: 20;
+      overflow: hidden;
     }
 
-    @media (min-width: 600px) {
-      .categories {
-        grid-template-columns: repeat(3, 1fr);
+    .side-menu button {
+      background: white;
+      color: #222;
+      text-align: left;
+      margin: 0;
+      border-radius: 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 50;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      background: white;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .modal-box h2 {
+      margin-top: 0;
+    }
+
+    .modal-box input,
+    .modal-box textarea,
+    .modal-box select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .modal-box textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .close {
+      background: #777;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+      background: #eef3f7;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (max-width: 380px) {
+      .category-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -226,322 +216,525 @@
 
 <body>
 
-  <!-- HEADER -->
-
-  <header class="header">
-
-    <div class="logo">
-      🏗️ My Construction
-    </div>
-
-    <button class="menu-button" onclick="openMenu()">
-      ☰
-    </button>
-
-  </header>
+<header>
+  <h2>🏗️ My Construction</h2>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
 
 
-  <!-- SIDE MENU -->
+<!-- MENU -->
 
-  <div id="menu" class="menu">
+<div id="sideMenu" class="side-menu">
 
-    <button class="close-menu" onclick="closeMenu()">✕</button>
+  <button onclick="menuMessage('➕ Create Labour')">
+    ➕ Create Labour
+  </button>
 
-    <h2>☰ Menu</h2>
+  <button onclick="menuMessage('👤 Edit Profile')">
+    👤 Edit Profile
+  </button>
 
-    <button onclick="menuAction('Create Labour')">
-      ➕ Create Labour
-    </button>
+  <button onclick="menuMessage('📍 Live Location / Address')">
+    📍 Live Location / Address
+  </button>
 
-    <button onclick="menuAction('Edit Profile')">
-      👤 Edit Profile
-    </button>
+  <button onclick="menuMessage('🤖 AI Help Line')">
+    🤖 AI Help Line
+  </button>
 
-    <button onclick="menuAction('Live Location / Address')">
-      📍 Live Location / Address
-    </button>
+  <button onclick="menuMessage('📅 My Bookings')">
+    📅 My Bookings
+  </button>
 
-    <button onclick="menuAction('AI Help Line')">
-      🤖 AI Help Line
-    </button>
+  <button onclick="menuMessage('🔔 Notifications')">
+    🔔 Notifications
+  </button>
 
-    <button onclick="menuAction('My Bookings')">
-      📅 My Bookings
-    </button>
+  <button onclick="menuMessage('⚙️ Settings')">
+    ⚙️ Settings
+  </button>
 
-    <button onclick="menuAction('Notifications')">
-      🔔 Notifications
-    </button>
+  <button onclick="logout()" class="red">
+    🚪 Logout
+  </button>
 
-    <button onclick="menuAction('Settings')">
-      ⚙️ Settings
-    </button>
+</div>
 
-    <button onclick="logout()">
-      🚪 Logout
+
+<div class="container">
+
+  <div class="welcome">
+    <h3>👋 Welcome to My Construction</h3>
+    <p>अपने काम के लिए सही Labour, Thekedar और Professional खोजें।</p>
+  </div>
+
+
+  <input
+    type="text"
+    id="searchBox"
+    class="search"
+    placeholder="🔍 Labour, Thekedar, Electrician..."
+    oninput="searchCategories()"
+  >
+
+
+  <!-- HOUSE PLANNER -->
+
+  <div class="house-card">
+
+    <h3>🏠 मेरा घर बनाना है</h3>
+
+    <p>
+      अपने घर की जानकारी देकर construction cost और preliminary house planning की शुरुआत करें।
+    </p>
+
+    <button onclick="startHousePlanning()">
+      🏠 Start My House Planning
     </button>
 
   </div>
 
 
-  <!-- MAIN -->
+  <h3>👷 Services</h3>
 
-  <main class="container">
-
-    <section class="welcome">
-
-      <h1>🏠 Welcome to My Construction</h1>
-
-      <p>
-        Labour, Thekedar और Construction Professionals
-        को आसानी से खोजें और Book करें।
-      </p>
-
-    </section>
+  <div class="category-grid" id="categoryGrid">
 
 
-    <!-- SEARCH -->
+    <div class="category" data-name="labour">
 
-    <section class="search-box">
+      <div class="icon">👷</div>
 
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="🔎 Labour, Thekedar, Electrician आदि खोजें..."
-        oninput="searchCategories()"
-      >
+      <h3>Labour</h3>
 
-    </section>
+      <p>Construction workers</p>
 
-
-    <!-- HOUSE BUILDING -->
-
-    <section class="home-card">
-
-      <h2>🏠 मेरा घर बनाना है</h2>
-
-      <p>
-        Plot details डालें और construction cost,
-        material estimate और house planning की जानकारी पाएँ।
-      </p>
-
-      <button onclick="startHomePlan()">
-        🏠 Start My House Planning
+      <button onclick="openBooking('Labour')">
+        Book Now
       </button>
 
-    </section>
+    </div>
 
 
-    <h2 class="section-title">
-      👷 Construction Professionals
-    </h2>
+    <div class="category" data-name="thekedar">
+
+      <div class="icon">👷‍♂️</div>
+
+      <h3>Thekedar</h3>
+
+      <p>Construction contractor</p>
+
+      <button onclick="openBooking('Thekedar')">
+        Book Now
+      </button>
+
+    </div>
 
 
-    <!-- CATEGORIES -->
+    <div class="category" data-name="electrician">
 
-    <section class="categories" id="categories">
+      <div class="icon">⚡</div>
 
-      <div class="category" data-name="labour">
-        <div class="icon">👷</div>
-        <h3>Labour</h3>
-        <p>काम करने वाले Labour</p>
-        <button onclick="bookCategory('Labour')">
-          Book Now
-        </button>
-      </div>
+      <h3>Electrician</h3>
 
+      <p>Electrical work</p>
 
-      <div class="category" data-name="thekedar contractor">
-        <div class="icon">👷‍♂️</div>
-        <h3>Thekedar</h3>
-        <p>Contractor / Thekedar</p>
-        <button onclick="bookCategory('Thekedar')">
-          Book Now
-        </button>
-      </div>
+      <button onclick="openBooking('Electrician')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="electrician">
-        <div class="icon">⚡</div>
-        <h3>Electrician</h3>
-        <p>Electrical work</p>
-        <button onclick="bookCategory('Electrician')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="plumber">
+
+      <div class="icon">🚰</div>
+
+      <h3>Plumber</h3>
+
+      <p>Plumbing work</p>
+
+      <button onclick="openBooking('Plumber')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="plumber">
-        <div class="icon">🚰</div>
-        <h3>Plumber</h3>
-        <p>Plumbing work</p>
-        <button onclick="bookCategory('Plumber')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="painter">
+
+      <div class="icon">🎨</div>
+
+      <h3>Painter</h3>
+
+      <p>Painting work</p>
+
+      <button onclick="openBooking('Painter')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="painter">
-        <div class="icon">🎨</div>
-        <h3>Painter</h3>
-        <p>Painting work</p>
-        <button onclick="bookCategory('Painter')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="mason">
+
+      <div class="icon">🧱</div>
+
+      <h3>Mason</h3>
+
+      <p>Raj Mistri / Mason</p>
+
+      <button onclick="openBooking('Mason')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="mason raj mistri">
-        <div class="icon">🧱</div>
-        <h3>Mason</h3>
-        <p>Raj Mistri / Mason</p>
-        <button onclick="bookCategory('Mason')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="carpenter">
+
+      <div class="icon">🪚</div>
+
+      <h3>Carpenter</h3>
+
+      <p>Wood work</p>
+
+      <button onclick="openBooking('Carpenter')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="carpenter">
-        <div class="icon">🪚</div>
-        <h3>Carpenter</h3>
-        <p>Wood work</p>
-        <button onclick="bookCategory('Carpenter')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="house designer">
+
+      <div class="icon">📐</div>
+
+      <h3>House Designer</h3>
+
+      <p>House planning & design</p>
+
+      <button onclick="openBooking('House Designer')">
+        Book Now
+      </button>
+
+    </div>
 
 
-      <div class="category" data-name="house designer architect">
-        <div class="icon">📐</div>
-        <h3>House Designer</h3>
-        <p>House plan / Design</p>
-        <button onclick="bookCategory('House Designer')">
-          Book Now
-        </button>
-      </div>
+    <div class="category" data-name="other">
+
+      <div class="icon">🔧</div>
+
+      <h3>Other</h3>
+
+      <p>Other professionals</p>
+
+      <button onclick="openBooking('Other')">
+        Book Now
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 
-      <div class="category" data-name="other professional">
-        <div class="icon">🔧</div>
-        <h3>Other</h3>
-        <p>Other professionals</p>
-        <button onclick="bookCategory('Other')">
-          Book Now
-        </button>
-      </div>
+<!-- BOOKING MODAL -->
 
-    </section>
+<div id="bookingModal" class="modal">
 
-  </main>
+  <div class="modal-box">
+
+    <h2>📅 Book Professional</h2>
+
+    <p id="selectedCategory"></p>
+
+    <input
+      type="text"
+      id="workDetails"
+      placeholder="काम का विवरण"
+    >
+
+    <textarea
+      id="bookingLocation"
+      placeholder="काम की Location / Address"
+    ></textarea>
+
+    <input
+      type="date"
+      id="bookingDate"
+    >
+
+    <input
+      type="time"
+      id="bookingTime"
+    >
+
+    <input
+      type="number"
+      id="bookingBudget"
+      placeholder="आपका Budget ₹"
+      min="0"
+    >
+
+    <button onclick="submitBooking()" class="green">
+      📤 Send Booking Request
+    </button>
+
+    <button onclick="closeBooking()" class="close">
+      ❌ Cancel
+    </button>
+
+    <div id="bookingMessage" class="message"></div>
+
+  </div>
+
+</div>
 
 
-  <!-- MESSAGE -->
+<script>
 
-  <div id="message"></div>
+  // ==========================
+  // SUPABASE
+  // ==========================
+
+  const SUPABASE_URL =
+    "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+  const SUPABASE_KEY =
+    "";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
 
-  <script>
+  let selectedCategory = "";
 
-    function openMenu() {
-      document.getElementById("menu").style.display = "block";
+
+  // ==========================
+  // MENU
+  // ==========================
+
+  function toggleMenu() {
+
+    const menu =
+      document.getElementById("sideMenu");
+
+    if (menu.style.display === "block") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "block";
     }
+  }
 
 
-    function closeMenu() {
-      document.getElementById("menu").style.display = "none";
-    }
+  function menuMessage(name) {
+
+    document.getElementById("sideMenu").style.display = "none";
+
+    alert(name + " — यह option अगली step में connect किया जाएगा।");
+  }
 
 
-    function showMessage(text) {
+  // ==========================
+  // SEARCH
+  // ==========================
 
-      const message =
-        document.getElementById("message");
+  function searchCategories() {
 
-      message.innerText = text;
-      message.style.display = "block";
+    const value =
+      document.getElementById("searchBox").value
+      .toLowerCase();
 
-      setTimeout(function() {
-        message.style.display = "none";
-      }, 2500);
-    }
+    const cards =
+      document.querySelectorAll(".category");
 
+    cards.forEach(card => {
 
-    function menuAction(name) {
+      const name =
+        card.getAttribute("data-name");
 
-      closeMenu();
-
-      showMessage(
-        "🔧 " + name + " feature जल्द जोड़ा जाएगा।"
-      );
-    }
-
-
-    function bookCategory(category) {
-
-      showMessage(
-        "📅 " + category +
-        " की booking/search screen अगले step में आएगी।"
-      );
-    }
-
-
-    function startHomePlan() {
-
-      showMessage(
-        "🏠 House Planning feature अगले step में खुलेगा।"
-      );
-    }
-
-
-    function searchCategories() {
-
-      const search =
-        document
-          .getElementById("searchInput")
-          .value
-          .toLowerCase()
-          .trim();
-
-      const cards =
-        document.querySelectorAll(".category");
-
-
-      cards.forEach(function(card) {
-
-        const name =
-          card.getAttribute("data-name");
-
-        if (name.includes(search)) {
-
-          card.style.display = "block";
-
-        } else {
-
-          card.style.display = "none";
-
-        }
-
-      });
-
-    }
-
-
-    function logout() {
-
-      closeMenu();
-
-      const confirmLogout =
-        confirm("क्या आप Logout करना चाहते हैं?");
-
-      if (confirmLogout) {
-
-        window.location.href = "index.html";
-
+      if (name.includes(value)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
       }
 
+    });
+  }
+
+
+  // ==========================
+  // OPEN BOOKING
+  // ==========================
+
+  function openBooking(category) {
+
+    selectedCategory = category;
+
+    document.getElementById("selectedCategory").innerText =
+      "आप " + category + " को book कर रहे हैं।";
+
+    document.getElementById("bookingMessage").style.display = "none";
+
+    document.getElementById("bookingModal").style.display = "block";
+  }
+
+
+  // ==========================
+  // CLOSE BOOKING
+  // ==========================
+
+  function closeBooking() {
+
+    document.getElementById("bookingModal").style.display = "none";
+
+    document.getElementById("workDetails").value = "";
+    document.getElementById("bookingLocation").value = "";
+    document.getElementById("bookingDate").value = "";
+    document.getElementById("bookingTime").value = "";
+    document.getElementById("bookingBudget").value = "";
+  }
+
+
+  // ==========================
+  // SUBMIT BOOKING
+  // ==========================
+
+  async function submitBooking() {
+
+    const workDetails =
+      document.getElementById("workDetails").value.trim();
+
+    const location =
+      document.getElementById("bookingLocation").value.trim();
+
+    const bookingDate =
+      document.getElementById("bookingDate").value;
+
+    const bookingTime =
+      document.getElementById("bookingTime").value;
+
+    const budgetValue =
+      document.getElementById("bookingBudget").value;
+
+    const message =
+      document.getElementById("bookingMessage");
+
+    message.style.display = "block";
+
+
+    if (
+      !workDetails ||
+      !location ||
+      !bookingDate ||
+      !bookingTime
+    ) {
+
+      message.innerText =
+        "⚠️ कृपया सभी जरूरी जानकारी भरें।";
+
+      return;
     }
 
-  </script>
+
+    message.innerText =
+      "⏳ Booking request भेजी जा रही है...";
+
+
+    try {
+
+      const {
+        data: { user },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+
+
+      if (userError || !user) {
+
+        message.innerText =
+          "❌ पहले Login करें।";
+
+        return;
+      }
+
+
+      const budget =
+        budgetValue ? Number(budgetValue) : null;
+
+
+      const { error } =
+        await supabaseClient
+        .from("bookings")
+        .insert({
+          client_id: user.id,
+          professional_id: null,
+          category: selectedCategory,
+          work_details: workDetails,
+          location: location,
+          booking_date: bookingDate,
+          booking_time: bookingTime,
+          budget: budget,
+          status: "pending"
+        });
+
+
+      if (error) {
+
+        message.innerText =
+          "❌ Booking save नहीं हुई: " + error.message;
+
+        return;
+      }
+
+
+      message.innerText =
+        "✅ Booking request successfully भेज दी गई!";
+
+
+      setTimeout(() => {
+        closeBooking();
+      }, 1500);
+
+
+    } catch (err) {
+
+      message.innerText =
+        "❌ Error: " + err.message;
+
+    }
+  }
+
+
+  // ==========================
+  // HOUSE PLANNING
+  // ==========================
+
+  function startHousePlanning() {
+
+    alert(
+      "🏠 House Planning feature अगली step में बनाया जाएगा।"
+    );
+
+  }
+
+
+  // ==========================
+  // LOGOUT
+  // ==========================
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "index.html";
+
+  }
+
+</script>
 
 </body>
 </html>
