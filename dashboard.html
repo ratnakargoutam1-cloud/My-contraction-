@@ -9,9 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -78,8 +76,6 @@ header{
   padding:18px;
 }
 
-/* HERO */
-
 .hero{
   background:linear-gradient(135deg,#111827,#26364f);
   color:white;
@@ -89,9 +85,7 @@ header{
   box-shadow:0 10px 30px rgba(17,24,39,.18);
 }
 
-.hero small{
-  color:#cbd5e1;
-}
+.hero small{color:#cbd5e1}
 
 .hero h1{
   margin:8px 0;
@@ -103,6 +97,17 @@ header{
   color:#dbe2ea;
   line-height:1.5;
   margin-bottom:18px;
+}
+
+.badge{
+  display:inline-block;
+  background:#f5b301;
+  color:#111827;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:5px;
 }
 
 .hero-search{
@@ -129,8 +134,6 @@ header{
   font-size:19px;
 }
 
-/* QUICK ACTIONS */
-
 .quick-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -148,9 +151,7 @@ header{
   box-shadow:0 4px 12px rgba(0,0,0,.04);
 }
 
-.quick-icon{
-  font-size:25px;
-}
+.quick-icon{font-size:25px}
 
 .quick span{
   display:block;
@@ -159,7 +160,43 @@ header{
   margin-top:6px;
 }
 
-/* HOUSE */
+.thekedar-panel{
+  display:none;
+  background:linear-gradient(135deg,#fff7d6,#fffdf5);
+  border:1px solid #f3dfa0;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:22px;
+}
+
+.thekedar-panel h2{
+  margin:0 0 6px;
+  font-size:19px;
+}
+
+.thekedar-panel p{
+  margin:0;
+  color:#667085;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.panel-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:15px;
+}
+
+.panel-btn{
+  border:0;
+  background:#111827;
+  color:white;
+  padding:12px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
 .house{
   background:linear-gradient(135deg,#fff7d6,#fffdf5);
@@ -210,8 +247,6 @@ header{
   cursor:pointer;
 }
 
-/* SECTION */
-
 .section-title{
   display:flex;
   align-items:center;
@@ -228,8 +263,6 @@ header{
   font-size:12px;
   color:#697386;
 }
-
-/* SERVICES */
 
 .service-grid{
   display:grid;
@@ -281,13 +314,6 @@ header{
   cursor:pointer;
 }
 
-.book:active,
-.primary:active{
-  transform:scale(.98);
-}
-
-/* MENU */
-
 .side-menu{
   display:none;
   position:fixed;
@@ -313,100 +339,18 @@ header{
   cursor:pointer;
 }
 
-.side-menu button:hover{
-  background:#f7f8fa;
-}
+.logout{color:#c62828!important}
 
-.logout{
-  color:#c62828!important;
-}
-
-/* MODAL */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,.68);
-  z-index:500;
-  padding:15px;
-  overflow:auto;
-}
-
-.modal-box{
-  background:white;
-  max-width:520px;
-  margin:30px auto;
-  border-radius:20px;
-  padding:20px;
-}
-
-.modal-box h2{
-  margin-top:0;
-}
-
-.modal-box input,
-.modal-box textarea{
-  width:100%;
-  padding:13px;
-  border:1px solid #d8dde5;
-  border-radius:10px;
-  margin-top:10px;
-  font-size:15px;
-  outline:none;
-}
-
-.modal-box textarea{
-  min-height:90px;
-  resize:vertical;
-}
-
-.send{
-  width:100%;
-  border:0;
-  background:#111827;
-  color:white;
-  padding:13px;
-  border-radius:10px;
-  margin-top:14px;
-  font-weight:bold;
-}
-
-.close{
-  width:100%;
-  border:0;
-  background:#edf0f3;
-  color:#333;
-  padding:12px;
-  border-radius:10px;
-  margin-top:8px;
-}
-
-.message{
-  display:none;
-  margin-top:12px;
-  padding:11px;
-  border-radius:9px;
-  background:#f1f5f9;
+.loading{
   text-align:center;
-  font-size:13px;
+  padding:20px;
+  color:#667085;
 }
-
-/* MOBILE */
 
 @media(max-width:380px){
-
-  .container{
-    padding:12px;
-  }
-
-  .service-grid{
-    grid-template-columns:1fr;
-  }
-
-  .hero h1{
-    font-size:23px;
-  }
+  .container{padding:12px}
+  .service-grid{grid-template-columns:1fr}
+  .hero h1{font-size:23px}
 }
 </style>
 </head>
@@ -414,81 +358,47 @@ header{
 <body>
 
 <header>
-
   <div class="logo">
-
     <div class="logo-icon">🏗️</div>
-
     <div>
       <div class="logo-text">My Construction</div>
       <div class="logo-sub">Build • Connect • Grow</div>
     </div>
-
   </div>
 
-  <button
-    class="menu-button"
-    onclick="toggleMenu()">
-    ☰
-  </button>
-
+  <button class="menu-button" onclick="toggleMenu()">☰</button>
 </header>
-
-
-<!-- MENU -->
 
 <div id="sideMenu" class="side-menu">
 
-  <button onclick="menuMessage('➕ Create Labour')">
-    ➕ Create Labour
-  </button>
+  <button onclick="editProfile()">👤 Edit Profile</button>
 
-  <button onclick="menuMessage('👤 Edit Profile')">
-    👤 Edit Profile
-  </button>
+  <button onclick="myBookings()">📅 My Bookings</button>
 
-  <button onclick="menuMessage('📍 Live Location / Address')">
-    📍 Live Location / Address
-  </button>
+  <button onclick="notifications()">🔔 Notifications</button>
 
-  <button onclick="menuMessage('🤖 AI Help Line')">
-    🤖 AI Help Line
-  </button>
+  <button onclick="location.reload()">🏠 Dashboard</button>
 
-  <button onclick="menuMessage('📅 My Bookings')">
-    📅 My Bookings
-  </button>
+  <button onclick="settings()">⚙️ Settings</button>
 
-  <button onclick="menuMessage('🔔 Notifications')">
-    🔔 Notifications
-  </button>
-
-  <button onclick="menuMessage('⚙️ Settings')">
-    ⚙️ Settings
-  </button>
-
-  <button class="logout" onclick="logout()">
-    🚪 Logout
-  </button>
+  <button class="logout" onclick="logout()">🚪 Logout</button>
 
 </div>
 
-
 <main class="container">
-
-
-<!-- HERO -->
 
 <section class="hero">
 
-  <small>WELCOME TO MY CONSTRUCTION</small>
+  <span class="badge" id="roleBadge">MY CONSTRUCTION</span>
 
-  <h1>
+  <small id="welcomeText">WELCOME</small>
+
+  <h1 id="heroTitle">
     आपके Construction काम का<br>
     एक Smart Platform
   </h1>
 
-  <p>
+  <p id="heroDescription">
     Labour, Thekedar और Construction Professionals
     को आसानी से खोजें और सीधे Book करें।
   </p>
@@ -502,386 +412,196 @@ header{
       oninput="searchServices()"
     >
 
-    <button class="search-icon">
-      🔍
+    <button class="search-icon">🔍</button>
+
+  </div>
+
+</section>
+
+<div class="quick-grid">
+
+  <div class="quick" onclick="myBookings()">
+    <div class="quick-icon">📅</div>
+    <span>Bookings</span>
+  </div>
+
+  <div class="quick" onclick="notifications()">
+    <div class="quick-icon">🔔</div>
+    <span>Alerts</span>
+  </div>
+
+  <div class="quick" onclick="editProfile()">
+    <div class="quick-icon">👤</div>
+    <span>Profile</span>
+  </div>
+
+</div>
+
+<!-- THEKEDAR DASHBOARD -->
+
+<section class="thekedar-panel" id="thekedarPanel">
+
+  <h2>👷‍♂️ Thekedar Dashboard</h2>
+
+  <p>
+    यहाँ से आप अपनी profile, construction work
+    और client booking requests manage कर सकेंगे।
+  </p>
+
+  <div class="panel-buttons">
+
+    <button class="panel-btn" onclick="editProfile()">
+      👤 My Profile
+    </button>
+
+    <button class="panel-btn" onclick="myBookings()">
+      📅 Booking Requests
+    </button>
+
+    <button class="panel-btn" onclick="addWork()">
+      ➕ Add Work
+    </button>
+
+    <button class="panel-btn" onclick="myWorks()">
+      🏗️ My Works
     </button>
 
   </div>
 
 </section>
 
-
-<!-- QUICK ACTIONS -->
-
-<div class="quick-grid">
-
-  <div
-    class="quick"
-    onclick="menuMessage('📅 My Bookings')">
-
-    <div class="quick-icon">📅</div>
-
-    <span>Bookings</span>
-
-  </div>
-
-
-  <div
-    class="quick"
-    onclick="menuMessage('🔔 Notifications')">
-
-    <div class="quick-icon">🔔</div>
-
-    <span>Alerts</span>
-
-  </div>
-
-
-  <div
-    class="quick"
-    onclick="menuMessage('👤 Edit Profile')">
-
-    <div class="quick-icon">👤</div>
-
-    <span>Profile</span>
-
-  </div>
-
-</div>
-
-
-<!-- HOUSE PLANNER -->
+<!-- HOUSE -->
 
 <section class="house">
 
   <div class="house-top">
 
-    <div class="house-icon">
-      🏠
-    </div>
+    <div class="house-icon">🏠</div>
 
     <div>
-
-      <h2>
-        मेरा घर बनाना है
-      </h2>
+      <h2>मेरा घर बनाना है</h2>
 
       <p>
-        अपने घर की जानकारी देकर
-        construction planning शुरू करें।
+        अपने घर की जानकारी देकर construction
+        planning शुरू करें।
       </p>
-
     </div>
 
   </div>
 
-  <button
-    class="primary"
-    onclick="startHousePlanning()">
-
+  <button class="primary" onclick="startHousePlanning()">
     Start My House Planning →
-
   </button>
 
 </section>
 
-
-<!-- SERVICES -->
-
 <div class="section-title">
 
-  <h2>
-    Construction Services
-  </h2>
+  <h2>Construction Services</h2>
 
-  <span>
-    सबसे जरूरी सेवाएँ
-  </span>
+  <span>सबसे जरूरी सेवाएँ</span>
 
 </div>
-
 
 <div class="service-grid" id="serviceGrid">
 
-
-<!-- LABOUR -->
-
-<div
-  class="service"
-  data-name="labour">
-
-  <div class="service-icon">
-    👷
+  <div class="service" data-name="labour">
+    <div class="service-icon">👷</div>
+    <h3>Labour</h3>
+    <p>Construction workers</p>
+    <button class="book" onclick="openProfessionals('labour')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Labour
-  </h3>
-
-  <p>
-    Construction workers
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('labour')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- THEKEDAR -->
-
-<div
-  class="service"
-  data-name="thekedar">
-
-  <div class="service-icon">
-    👷‍♂️
+  <div class="service" data-name="thekedar">
+    <div class="service-icon">👷‍♂️</div>
+    <h3>Thekedar</h3>
+    <p>Construction contractor</p>
+    <button class="book" onclick="openProfessionals('thekedar')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Thekedar
-  </h3>
-
-  <p>
-    Construction contractor
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('thekedar')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- ELECTRICIAN -->
-
-<div
-  class="service"
-  data-name="electrician">
-
-  <div class="service-icon">
-    ⚡
+  <div class="service" data-name="electrician">
+    <div class="service-icon">⚡</div>
+    <h3>Electrician</h3>
+    <p>Electrical work</p>
+    <button class="book" onclick="openProfessionals('electrician')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Electrician
-  </h3>
-
-  <p>
-    Electrical work
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('electrician')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- PLUMBER -->
-
-<div
-  class="service"
-  data-name="plumber">
-
-  <div class="service-icon">
-    🚰
+  <div class="service" data-name="plumber">
+    <div class="service-icon">🚰</div>
+    <h3>Plumber</h3>
+    <p>Plumbing work</p>
+    <button class="book" onclick="openProfessionals('plumber')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Plumber
-  </h3>
-
-  <p>
-    Plumbing work
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('plumber')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- PAINTER -->
-
-<div
-  class="service"
-  data-name="painter">
-
-  <div class="service-icon">
-    🎨
+  <div class="service" data-name="painter">
+    <div class="service-icon">🎨</div>
+    <h3>Painter</h3>
+    <p>Painting work</p>
+    <button class="book" onclick="openProfessionals('painter')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Painter
-  </h3>
-
-  <p>
-    Painting work
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('painter')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- MASON -->
-
-<div
-  class="service"
-  data-name="mason">
-
-  <div class="service-icon">
-    🧱
+  <div class="service" data-name="mason">
+    <div class="service-icon">🧱</div>
+    <h3>Mason</h3>
+    <p>Raj Mistri / Mason</p>
+    <button class="book" onclick="openProfessionals('mason')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Mason
-  </h3>
-
-  <p>
-    Raj Mistri / Mason
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('mason')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- CARPENTER -->
-
-<div
-  class="service"
-  data-name="carpenter">
-
-  <div class="service-icon">
-    🪚
+  <div class="service" data-name="carpenter">
+    <div class="service-icon">🪚</div>
+    <h3>Carpenter</h3>
+    <p>Wood work</p>
+    <button class="book" onclick="openProfessionals('carpenter')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    Carpenter
-  </h3>
-
-  <p>
-    Wood work
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('carpenter')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- HOUSE DESIGNER -->
-
-<div
-  class="service"
-  data-name="house designer">
-
-  <div class="service-icon">
-    📐
+  <div class="service" data-name="house designer">
+    <div class="service-icon">📐</div>
+    <h3>House Designer</h3>
+    <p>House planning & design</p>
+    <button class="book" onclick="openProfessionals('house designer')">
+      Book Now
+    </button>
   </div>
 
-  <h3>
-    House Designer
-  </h3>
-
-  <p>
-    House planning & design
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('house designer')">
-
-    Book Now
-
-  </button>
-
-</div>
-
-
-<!-- OTHER -->
-
-<div
-  class="service"
-  data-name="other">
-
-  <div class="service-icon">
-    🔧
+  <div class="service" data-name="other">
+    <div class="service-icon">🔧</div>
+    <h3>Other</h3>
+    <p>Other professionals</p>
+    <button class="book" onclick="openProfessionals('other')">
+      Book Now
+    </button>
   </div>
-
-  <h3>
-    Other
-  </h3>
-
-  <p>
-    Other professionals
-  </p>
-
-  <button
-    class="book"
-    onclick="openProfessionals('other')">
-
-    Book Now
-
-  </button>
-
-</div>
-
 
 </div>
 
 </main>
 
-
 <script>
-
-/* =========================
-   SUPABASE
-========================= */
 
 const SUPABASE_URL =
 "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
+/*
+  IMPORTANT:
+  यहाँ अपनी dashboard.html में लगी हुई
+  वही CURRENT PUBLISHABLE KEY रखें।
+*/
 const SUPABASE_KEY =
 "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
-  
 
 const supabaseClient =
 window.supabase.createClient(
@@ -890,37 +610,94 @@ window.supabase.createClient(
 );
 
 
-/* =========================
-   MENU
-========================= */
+/* LOAD USER ROLE */
+
+async function loadUser(){
+
+  const {
+    data:{user},
+    error
+  } = await supabaseClient.auth.getUser();
+
+  if(error || !user){
+    window.location.href="index.html";
+    return;
+  }
+
+  const {data:profile,error:profileError} =
+    await supabaseClient
+    .from("Profiles")
+    .select("Name,Role")
+    .eq("id",user.id)
+    .maybeSingle();
+
+  if(profileError){
+    console.log(profileError);
+    return;
+  }
+
+  if(!profile){
+    return;
+  }
+
+  const role =
+    String(profile.Role || "").toLowerCase();
+
+  const name =
+    profile.Name || "User";
+
+  document.getElementById("welcomeText").innerText =
+    "WELCOME, " + name.toUpperCase();
+
+  if(role === "thekedar"){
+
+    document.getElementById("roleBadge").innerText =
+      "👷‍♂️ THEKEDAR";
+
+    document.getElementById("heroTitle").innerHTML =
+      "Welcome " + escapeHtml(name) + "!<br>Thekedar Dashboard";
+
+    document.getElementById("heroDescription").innerText =
+      "अपने construction work, profile और client booking requests को manage करें।";
+
+    document.getElementById("thekedarPanel").style.display =
+      "block";
+
+  }
+
+}
+
+
+/* SAFE TEXT */
+
+function escapeHtml(text){
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* MENU */
 
 function toggleMenu(){
 
   const menu =
-  document.getElementById("sideMenu");
+    document.getElementById("sideMenu");
 
   menu.style.display =
     menu.style.display === "block"
     ? "none"
     : "block";
+
 }
 
 
-function menuMessage(name){
-
-  document.getElementById("sideMenu")
-  .style.display="none";
-
-  alert(
-    name +
-    " अभी अगले feature में connect किया जाएगा।"
-  );
-}
-
-
-/* =========================
-   PROFESSIONAL LISTING
-========================= */
+/* PROFESSIONALS */
 
 function openProfessionals(category){
 
@@ -931,9 +708,61 @@ function openProfessionals(category){
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+/* PROFILE */
+
+function editProfile(){
+
+  alert("👤 Profile Management अगले step में connect किया जाएगा।");
+
+}
+
+
+/* BOOKINGS */
+
+function myBookings(){
+
+  alert("📅 Booking Management अगले step में connect किया जाएगा।");
+
+}
+
+
+/* NOTIFICATIONS */
+
+function notifications(){
+
+  alert("🔔 Notifications अगले step में connect किए जाएंगे।");
+
+}
+
+
+/* SETTINGS */
+
+function settings(){
+
+  alert("⚙️ Settings अगले step में connect की जाएंगी।");
+
+}
+
+
+/* ADD WORK */
+
+function addWork(){
+
+  alert("➕ Add Work feature अगले step में बनाया जाएगा।");
+
+}
+
+
+/* MY WORKS */
+
+function myWorks(){
+
+  alert("🏗️ My Works feature अगले step में बनाया जाएगा।");
+
+}
+
+
+/* SEARCH */
 
 function searchServices(){
 
@@ -944,16 +773,13 @@ function searchServices(){
     .toLowerCase()
     .trim();
 
-
   const services =
     document.querySelectorAll(".service");
-
 
   services.forEach(service => {
 
     const name =
       service.getAttribute("data-name");
-
 
     service.style.display =
       name.includes(value)
@@ -965,31 +791,31 @@ function searchServices(){
 }
 
 
-/* =========================
-   HOUSE PLANNING
-========================= */
+/* HOUSE */
 
 function startHousePlanning(){
 
   alert(
-    "🏠 House Planning जल्द ही उपलब्ध होगा।"
+    "🏠 House Planning feature अगले step में बनाया जाएगा।"
   );
 
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* LOGOUT */
 
 async function logout(){
 
   await supabaseClient.auth.signOut();
 
-  window.location.href =
-    "index.html";
+  window.location.href="index.html";
 
 }
+
+
+/* START */
+
+loadUser();
 
 </script>
 
