@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Construction - Professionals</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f4f6f8;
+  color:#222;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:16px;
+}
+
+.header{
+  max-width:700px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.back{
+  border:0;
+  background:white;
+  color:#111827;
+  padding:9px 14px;
+  border-radius:9px;
+  font-weight:bold;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:20px 16px;
+}
+
+h1{
+  font-size:25px;
+  margin-bottom:5px;
+}
+
+.subtitle{
+  color:#666;
+  margin-bottom:18px;
+}
+
+.search{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  background:white;
+  font-size:15px;
+  margin-bottom:18px;
+}
+
+.card{
+  background:white;
+  border-radius:17px;
+  padding:17px;
+  margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.photo{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e7eb;
+}
+
+.avatar{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  background:#e5e7eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+}
+
+.name{
+  font-size:19px;
+  font-weight:bold;
+}
+
+.role{
+  color:#2563eb;
+  margin-top:5px;
+}
+
+.verified{
+  color:#16a34a;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.details{
+  margin-top:15px;
+  line-height:1.9;
+  color:#555;
+  font-size:14px;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.btn{
+  flex:1;
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.view{
+  background:#e5e7eb;
+}
+
+.book{
+  background:#2563eb;
+  color:white;
+}
+
+.center{
+  text-align:center;
+  padding:30px;
+  color:#666;
+}
+
+.error{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  color:#dc2626;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header">
+    <div class="logo">🏗️ My Construction</div>
+    <button class="back" onclick="history.back()">← Back</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <h1 id="title">Professionals</h1>
+
+  <div class="subtitle">
+    अपने लिए सही professional चुनें
+  </div>
+
+  <input
+    id="search"
+    class="search"
+    type="text"
+    placeholder="🔎 नाम, skill या location खोजें..."
+    oninput="searchProfiles()"
+  >
+
+  <div id="loading" class="center">
+    ⏳ Professionals लोड हो रहे हैं...
+  </div>
+
+  <div id="profiles"></div>
+
+</div>
+
+<script>
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+"अपनी_PUBLISHABLE_KEY_यहाँ_डालें";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =========================
+   CATEGORY
+========================= */
+
+const params =
+new URLSearchParams(window.location.search);
+
+let category =
+params.get("category") || "thekedar";
+
+category = category.toLowerCase();
+
+const categoryNames = {
+  labour:"Labour",
+  thekedar:"Thekedar",
+  electrician:"Electrician",
+  plumber:"Plumber",
+  painter:"Painter",
+  mason:"Mason",
+  carpenter:"Carpenter",
+  designer:"House Designer",
+  "house designer":"House Designer",
+  other:"Other"
+};
+
+const displayName =
+categoryNames[category] || category;
+
+document.getElementById("title").innerText =
+"👷 " + displayName;
+
+
+/* =========================
+   DATA
+========================= */
+
+let allProfiles = [];
+
+
+/* =========================
+   LOAD PROFILES
+========================= */
+
+async function loadProfiles(){
+
+  const loading =
+  document.getElementById("loading");
+
+  const container =
+  document.getElementById("profiles");
+
+  try{
+
+    const {data,error} =
+    await supabaseClient
+    .from("Profiles")
+    .select(`
+      id,
+      Name,
+      Role,
+      Mobile,
+      Skill,
+      Experience,
+      Location,
+      Daily_wage,
+      bio,
+      profile_image,
+      city,
+      rating,
+      total_reviews,
+      is_verified,
+      is_available
+    `)
+    .ilike("Role",displayName);
+
+
+    if(error){
+
+      console.log(error);
+
+      loading.style.display="none";
+
+      container.innerHTML = `
+        <div class="error">
+          ❌ Profile load नहीं हो पाई।<br><br>
+          ${escapeHTML(error.message)}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    allProfiles = data || [];
+
+    loading.style.display="none";
+
+    renderProfiles(allProfiles);
+
+  }catch(error){
+
+    console.log(error);
+
+    loading.style.display="none";
+
+    container.innerHTML = `
+      <div class="error">
+        ❌ कुछ समस्या हुई। कृपया दोबारा कोशिश करें।
+      </div>
+    `;
+  }
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderProfiles(profiles){
+
+  const container =
+  document.getElementById("profiles");
+
+  container.innerHTML="";
+
+
+  if(profiles.length===0){
+
+    container.innerHTML=`
+      <div class="center">
+        😔 अभी कोई ${escapeHTML(displayName)}
+        registered नहीं है।
+      </div>
+    `;
+
+    return;
+  }
+
+
+  profiles.forEach(profile=>{
+
+    const card =
+    document.createElement("div");
+
+    card.className="card";
+
+
+    let imageHTML=`
+      <div class="avatar">👤</div>
+    `;
+
+
+    if(profile.profile_image){
+
+      imageHTML=`
+        <img
+          class="photo"
+          src="${escapeHTML(profile.profile_image)}"
+          alt="Profile"
+        >
+      `;
+    }
+
+
+    let verified="";
+
+    if(profile.is_verified){
+
+      verified=`
+        <div class="verified">
+          ✔ Verified Professional
+        </div>
+      `;
+    }
+
+
+    let rating =
+    Number(profile.rating || 0);
+
+    let reviews =
+    Number(profile.total_reviews || 0);
+
+
+    let availability =
+    profile.is_available === false
+    ? "🔴 अभी उपलब्ध नहीं"
+    : "🟢 अभी उपलब्ध";
+
+
+    card.innerHTML=`
+
+      <div class="top">
+
+        ${imageHTML}
+
+        <div>
+
+          <div class="name">
+            ${escapeHTML(
+              profile.Name || "Professional"
+            )}
+          </div>
+
+          <div class="role">
+            ${escapeHTML(
+              profile.Role || displayName
+            )}
+          </div>
+
+          ${verified}
+
+        </div>
+
+      </div>
+
+
+      <div class="details">
+
+        🔧 Skill:
+        ${escapeHTML(
+          profile.Skill || "Not added"
+        )}<br>
+
+        📅 Experience:
+        ${escapeHTML(
+          profile.Experience || "Not added"
+        )}<br>
+
+        📍 Location:
+        ${escapeHTML(
+          profile.city ||
+          profile.Location ||
+          "Not added"
+        )}<br>
+
+        💰 Daily Wage:
+        ₹${profile.Daily_wage || "Contact"}<br>
+
+        ⭐ Rating:
+        ${rating.toFixed(1)}
+        (${reviews} reviews)<br>
+
+        ${availability}
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button
+          class="btn view"
+          onclick="viewProfile('${profile.id}')">
+          👤 View Profile
+        </button>
+
+        <button
+          class="btn book"
+          onclick="bookProfessional('${profile.id}')">
+          📅 Book Now
+        </button>
+
+      </div>
+    `;
+
+
+    container.appendChild(card);
+
+  });
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchProfiles(){
+
+  const text =
+  document
+  .getElementById("search")
+  .value
+  .toLowerCase();
+
+
+  const filtered =
+  allProfiles.filter(profile=>{
+
+    const content=`
+      ${profile.Name || ""}
+      ${profile.Skill || ""}
+      ${profile.Location || ""}
+      ${profile.city || ""}
+      ${profile.Role || ""}
+    `.toLowerCase();
+
+    return content.includes(text);
+
+  });
+
+
+  renderProfiles(filtered);
+}
+
+
+/* =========================
+   VIEW PROFILE
+========================= */
+
+function viewProfile(id){
+
+  window.location.href =
+  "profile.html?id=" +
+  encodeURIComponent(id);
+}
+
+
+/* =========================
+   BOOK
+========================= */
+
+function bookProfessional(id){
+
+  window.location.href =
+  "booking.html?professional_id=" +
+  encodeURIComponent(id) +
+  "&category=" +
+  encodeURIComponent(displayName);
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(value){
+
+  if(value===null ||
+     value===undefined){
+
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadProfiles();
+
+</script>
+
+</body>
+</html>
