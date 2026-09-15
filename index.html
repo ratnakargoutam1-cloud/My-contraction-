@@ -6,7 +6,6 @@
 
   <title>My Construction</title>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -105,7 +104,6 @@
 
     <h1>My Construction</h1>
 
-    <!-- Tabs -->
     <div class="tabs">
       <button type="button" onclick="showSignup()">Signup</button>
       <button type="button" onclick="showLogin()">Login</button>
@@ -186,12 +184,12 @@
 
   <script>
 
-    // ==========================================
+    // =========================
     // SUPABASE
-    // ==========================================
+    // =========================
 
     const SUPABASE_URL =
-  "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+      "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
     const SUPABASE_KEY =
       "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
@@ -203,33 +201,29 @@
       );
 
 
-    // ==========================================
+    // =========================
     // SHOW SIGNUP
-    // ==========================================
+    // =========================
 
     function showSignup() {
-
       document.getElementById("signupBox").style.display = "block";
-
       document.getElementById("loginBox").style.display = "none";
     }
 
 
-    // ==========================================
+    // =========================
     // SHOW LOGIN
-    // ==========================================
+    // =========================
 
     function showLogin() {
-
       document.getElementById("signupBox").style.display = "none";
-
       document.getElementById("loginBox").style.display = "block";
     }
 
 
-    // ==========================================
+    // =========================
     // SIGNUP
-    // ==========================================
+    // =========================
 
     async function signup() {
 
@@ -251,24 +245,19 @@
       const message =
         document.getElementById("signupMessage");
 
-
       message.style.display = "block";
 
 
       if (!name || !mobile || !email || !password || !role) {
-
         message.innerText =
           "⚠️ कृपया सभी जानकारी भरें।";
-
         return;
       }
 
 
       if (password.length < 6) {
-
         message.innerText =
           "⚠️ Password कम से कम 6 characters का होना चाहिए।";
-
         return;
       }
 
@@ -281,28 +270,21 @@
 
         const { data, error } =
           await supabaseClient.auth.signUp({
-
             email: email,
-
             password: password
-
           });
 
 
         if (error) {
-
           message.innerText =
             "❌ " + error.message;
-
           return;
         }
 
 
         if (!data.user) {
-
           message.innerText =
             "❌ Account create नहीं हुआ।";
-
           return;
         }
 
@@ -311,24 +293,17 @@
           await supabaseClient
             .from("Profiles")
             .insert({
-
               id: data.user.id,
-
               Role: role,
-
               Name: name,
-
               Mobile: mobile
-
             });
 
 
         if (profileError) {
-
           message.innerText =
             "⚠️ Account बन गया, लेकिन Profile save नहीं हुई: "
             + profileError.message;
-
           return;
         }
 
@@ -343,13 +318,12 @@
           "❌ Connection error: " + err.message;
 
       }
-
     }
 
 
-    // ==========================================
+    // =========================
     // LOGIN
-    // ==========================================
+    // =========================
 
     async function login() {
 
@@ -362,15 +336,12 @@
       const message =
         document.getElementById("loginMessage");
 
-
       message.style.display = "block";
 
 
       if (!email || !password) {
-
         message.innerText =
           "⚠️ Email और Password भरें।";
-
         return;
       }
 
@@ -383,25 +354,28 @@
 
         const { data, error } =
           await supabaseClient.auth.signInWithPassword({
-
             email: email,
-
             password: password
-
           });
 
 
         if (error) {
-
           message.innerText =
             "❌ " + error.message;
-
           return;
         }
 
 
-        message.innerText =
-          "✅ Login successful!";
+        if (data.session) {
+
+          message.innerText =
+            "✅ Login successful!";
+
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 500);
+
+        }
 
 
       } catch (err) {
@@ -410,7 +384,6 @@
           "❌ Connection error: " + err.message;
 
       }
-
     }
 
   </script>
