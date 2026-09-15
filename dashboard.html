@@ -395,6 +395,7 @@ header{
 /* MOBILE */
 
 @media(max-width:380px){
+
   .container{
     padding:12px;
   }
@@ -415,15 +416,21 @@ header{
 <header>
 
   <div class="logo">
+
     <div class="logo-icon">🏗️</div>
 
     <div>
       <div class="logo-text">My Construction</div>
       <div class="logo-sub">Build • Connect • Grow</div>
     </div>
+
   </div>
 
-  <button class="menu-button" onclick="toggleMenu()">☰</button>
+  <button
+    class="menu-button"
+    onclick="toggleMenu()">
+    ☰
+  </button>
 
 </header>
 
@@ -470,287 +477,397 @@ header{
 <main class="container">
 
 
-  <!-- HERO -->
+<!-- HERO -->
 
-  <section class="hero">
+<section class="hero">
 
-    <small>WELCOME TO MY CONSTRUCTION</small>
+  <small>WELCOME TO MY CONSTRUCTION</small>
 
-    <h1>आपके Construction काम का<br>एक Smart Platform</h1>
+  <h1>
+    आपके Construction काम का<br>
+    एक Smart Platform
+  </h1>
 
-    <p>
-      Labour, Thekedar और Construction Professionals
-      को आसानी से खोजें और सीधे Book करें।
-    </p>
+  <p>
+    Labour, Thekedar और Construction Professionals
+    को आसानी से खोजें और सीधे Book करें।
+  </p>
 
-    <div class="hero-search">
-
-      <input
-        id="searchBox"
-        type="text"
-        placeholder="Labour, Electrician, Plumber..."
-        oninput="searchServices()"
-      >
-
-      <button class="search-icon">🔍</button>
-
-    </div>
-
-  </section>
-
-
-  <!-- QUICK ACTIONS -->
-
-  <div class="quick-grid">
-
-    <div class="quick" onclick="menuMessage('📅 My Bookings')">
-      <div class="quick-icon">📅</div>
-      <span>Bookings</span>
-    </div>
-
-    <div class="quick" onclick="menuMessage('🔔 Notifications')">
-      <div class="quick-icon">🔔</div>
-      <span>Alerts</span>
-    </div>
-
-    <div class="quick" onclick="menuMessage('👤 Edit Profile')">
-      <div class="quick-icon">👤</div>
-      <span>Profile</span>
-    </div>
-
-  </div>
-
-
-  <!-- HOUSE PLANNER -->
-
-  <section class="house">
-
-    <div class="house-top">
-
-      <div class="house-icon">🏠</div>
-
-      <div>
-        <h2>मेरा घर बनाना है</h2>
-
-        <p>
-          अपने घर की जानकारी देकर
-          construction planning शुरू करें।
-        </p>
-      </div>
-
-    </div>
-
-    <button class="primary" onclick="startHousePlanning()">
-      Start My House Planning →
-    </button>
-
-  </section>
-
-
-  <!-- SERVICES -->
-
-  <div class="section-title">
-
-    <h2>Construction Services</h2>
-
-    <span>सबसे जरूरी सेवाएँ</span>
-
-  </div>
-
-
-  <div class="service-grid" id="serviceGrid">
-
-
-    <div class="service" data-name="labour">
-
-      <div class="service-icon">👷</div>
-
-      <h3>Labour</h3>
-
-      <p>Construction workers</p>
-
-      <button class="book" onclick="openBooking('Labour')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="thekedar">
-
-      <div class="service-icon">👷‍♂️</div>
-
-      <h3>Thekedar</h3>
-
-      <p>Construction contractor</p>
-
-      <button class="book" onclick="openBooking('Thekedar')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="electrician">
-
-      <div class="service-icon">⚡</div>
-
-      <h3>Electrician</h3>
-
-      <p>Electrical work</p>
-
-      <button class="book" onclick="openBooking('Electrician')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="plumber">
-
-      <div class="service-icon">🚰</div>
-
-      <h3>Plumber</h3>
-
-      <p>Plumbing work</p>
-
-      <button class="book" onclick="openBooking('Plumber')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="painter">
-
-      <div class="service-icon">🎨</div>
-
-      <h3>Painter</h3>
-
-      <p>Painting work</p>
-
-      <button class="book" onclick="openBooking('Painter')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="mason">
-
-      <div class="service-icon">🧱</div>
-
-      <h3>Mason</h3>
-
-      <p>Raj Mistri / Mason</p>
-
-      <button class="book" onclick="openBooking('Mason')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="carpenter">
-
-      <div class="service-icon">🪚</div>
-
-      <h3>Carpenter</h3>
-
-      <p>Wood work</p>
-
-      <button class="book" onclick="openBooking('Carpenter')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="house designer">
-
-      <div class="service-icon">📐</div>
-
-      <h3>House Designer</h3>
-
-      <p>House planning & design</p>
-
-      <button class="book" onclick="openBooking('House Designer')">
-        Book Now
-      </button>
-
-    </div>
-
-
-    <div class="service" data-name="other">
-
-      <div class="service-icon">🔧</div>
-
-      <h3>Other</h3>
-
-      <p>Other professionals</p>
-
-      <button class="book" onclick="openBooking('Other')">
-        Book Now
-      </button>
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<!-- BOOKING MODAL -->
-
-<div id="bookingModal" class="modal">
-
-  <div class="modal-box">
-
-    <h2>📅 Booking Request</h2>
-
-    <p id="selectedCategory"></p>
+  <div class="hero-search">
 
     <input
-      id="workDetails"
+      id="searchBox"
       type="text"
-      placeholder="काम का विवरण"
+      placeholder="Labour, Electrician, Plumber..."
+      oninput="searchServices()"
     >
 
-    <textarea
-      id="bookingLocation"
-      placeholder="काम की Location / Address"
-    ></textarea>
-
-    <input
-      id="bookingDate"
-      type="date"
-    >
-
-    <input
-      id="bookingTime"
-      type="time"
-    >
-
-    <input
-      id="bookingBudget"
-      type="number"
-      placeholder="Budget ₹"
-      min="0"
-    >
-
-    <button class="send" onclick="submitBooking()">
-      📤 Send Booking Request
+    <button class="search-icon">
+      🔍
     </button>
 
-    <button class="close" onclick="closeBooking()">
-      Cancel
-    </button>
+  </div>
 
-    <div id="bookingMessage" class="message"></div>
+</section>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="quick-grid">
+
+  <div
+    class="quick"
+    onclick="menuMessage('📅 My Bookings')">
+
+    <div class="quick-icon">📅</div>
+
+    <span>Bookings</span>
+
+  </div>
+
+
+  <div
+    class="quick"
+    onclick="menuMessage('🔔 Notifications')">
+
+    <div class="quick-icon">🔔</div>
+
+    <span>Alerts</span>
+
+  </div>
+
+
+  <div
+    class="quick"
+    onclick="menuMessage('👤 Edit Profile')">
+
+    <div class="quick-icon">👤</div>
+
+    <span>Profile</span>
 
   </div>
 
 </div>
+
+
+<!-- HOUSE PLANNER -->
+
+<section class="house">
+
+  <div class="house-top">
+
+    <div class="house-icon">
+      🏠
+    </div>
+
+    <div>
+
+      <h2>
+        मेरा घर बनाना है
+      </h2>
+
+      <p>
+        अपने घर की जानकारी देकर
+        construction planning शुरू करें।
+      </p>
+
+    </div>
+
+  </div>
+
+  <button
+    class="primary"
+    onclick="startHousePlanning()">
+
+    Start My House Planning →
+
+  </button>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<div class="section-title">
+
+  <h2>
+    Construction Services
+  </h2>
+
+  <span>
+    सबसे जरूरी सेवाएँ
+  </span>
+
+</div>
+
+
+<div class="service-grid" id="serviceGrid">
+
+
+<!-- LABOUR -->
+
+<div
+  class="service"
+  data-name="labour">
+
+  <div class="service-icon">
+    👷
+  </div>
+
+  <h3>
+    Labour
+  </h3>
+
+  <p>
+    Construction workers
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('labour')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- THEKEDAR -->
+
+<div
+  class="service"
+  data-name="thekedar">
+
+  <div class="service-icon">
+    👷‍♂️
+  </div>
+
+  <h3>
+    Thekedar
+  </h3>
+
+  <p>
+    Construction contractor
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('thekedar')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- ELECTRICIAN -->
+
+<div
+  class="service"
+  data-name="electrician">
+
+  <div class="service-icon">
+    ⚡
+  </div>
+
+  <h3>
+    Electrician
+  </h3>
+
+  <p>
+    Electrical work
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('electrician')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- PLUMBER -->
+
+<div
+  class="service"
+  data-name="plumber">
+
+  <div class="service-icon">
+    🚰
+  </div>
+
+  <h3>
+    Plumber
+  </h3>
+
+  <p>
+    Plumbing work
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('plumber')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- PAINTER -->
+
+<div
+  class="service"
+  data-name="painter">
+
+  <div class="service-icon">
+    🎨
+  </div>
+
+  <h3>
+    Painter
+  </h3>
+
+  <p>
+    Painting work
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('painter')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- MASON -->
+
+<div
+  class="service"
+  data-name="mason">
+
+  <div class="service-icon">
+    🧱
+  </div>
+
+  <h3>
+    Mason
+  </h3>
+
+  <p>
+    Raj Mistri / Mason
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('mason')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- CARPENTER -->
+
+<div
+  class="service"
+  data-name="carpenter">
+
+  <div class="service-icon">
+    🪚
+  </div>
+
+  <h3>
+    Carpenter
+  </h3>
+
+  <p>
+    Wood work
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('carpenter')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- HOUSE DESIGNER -->
+
+<div
+  class="service"
+  data-name="house designer">
+
+  <div class="service-icon">
+    📐
+  </div>
+
+  <h3>
+    House Designer
+  </h3>
+
+  <p>
+    House planning & design
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('house designer')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+<!-- OTHER -->
+
+<div
+  class="service"
+  data-name="other">
+
+  <div class="service-icon">
+    🔧
+  </div>
+
+  <h3>
+    Other
+  </h3>
+
+  <p>
+    Other professionals
+  </p>
+
+  <button
+    class="book"
+    onclick="openProfessionals('other')">
+
+    Book Now
+
+  </button>
+
+</div>
+
+
+</div>
+
+</main>
 
 
 <script>
@@ -762,23 +879,14 @@ header{
 const SUPABASE_URL =
 "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-/*
-  IMPORTANT:
-  यहाँ अपनी current index.html वाली
-  publishable key डालें।
-*/
-
 const SUPABASE_KEY =
-"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+"अपनी_CURRENT_PUBLISHABLE_KEY_यहाँ_डालें";
 
 const supabaseClient =
 window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-
-
-let selectedCategory = "";
 
 
 /* =========================
@@ -791,9 +899,9 @@ function toggleMenu(){
   document.getElementById("sideMenu");
 
   menu.style.display =
-  menu.style.display === "block"
-  ? "none"
-  : "block";
+    menu.style.display === "block"
+    ? "none"
+    : "block";
 }
 
 
@@ -810,205 +918,48 @@ function menuMessage(name){
 
 
 /* =========================
+   PROFESSIONAL LISTING
+========================= */
+
+function openProfessionals(category){
+
+  window.location.href =
+    "professionals.html?category=" +
+    encodeURIComponent(category);
+
+}
+
+
+/* =========================
    SEARCH
 ========================= */
 
 function searchServices(){
 
   const value =
-  document.getElementById("searchBox")
-  .value
-  .toLowerCase()
-  .trim();
+    document
+    .getElementById("searchBox")
+    .value
+    .toLowerCase()
+    .trim();
+
 
   const services =
-  document.querySelectorAll(".service");
+    document.querySelectorAll(".service");
+
 
   services.forEach(service => {
 
     const name =
-    service.getAttribute("data-name");
+      service.getAttribute("data-name");
+
 
     service.style.display =
-    name.includes(value)
-    ? "block"
-    : "none";
+      name.includes(value)
+      ? "block"
+      : "none";
 
   });
-}
-
-
-/* =========================
-   BOOKING OPEN
-========================= */
-
-function openBooking(category){
-
-  selectedCategory = category;
-
-  document.getElementById(
-    "selectedCategory"
-  ).innerText =
-  "Selected Service: " + category;
-
-  document.getElementById(
-    "bookingMessage"
-  ).style.display="none";
-
-  document.getElementById(
-    "bookingModal"
-  ).style.display="block";
-}
-
-
-/* =========================
-   BOOKING CLOSE
-========================= */
-
-function closeBooking(){
-
-  document.getElementById(
-    "bookingModal"
-  ).style.display="none";
-
-}
-
-
-/* =========================
-   SEND BOOKING
-========================= */
-
-async function submitBooking(){
-
-  const workDetails =
-  document.getElementById(
-    "workDetails"
-  ).value.trim();
-
-  const location =
-  document.getElementById(
-    "bookingLocation"
-  ).value.trim();
-
-  const bookingDate =
-  document.getElementById(
-    "bookingDate"
-  ).value;
-
-  const bookingTime =
-  document.getElementById(
-    "bookingTime"
-  ).value;
-
-  const budgetValue =
-  document.getElementById(
-    "bookingBudget"
-  ).value;
-
-  const message =
-  document.getElementById(
-    "bookingMessage"
-  );
-
-  message.style.display="block";
-
-
-  if(
-    !workDetails ||
-    !location ||
-    !bookingDate ||
-    !bookingTime
-  ){
-
-    message.innerText =
-    "⚠️ कृपया जरूरी जानकारी भरें।";
-
-    return;
-  }
-
-
-  message.innerText =
-  "⏳ Booking request भेजी जा रही है...";
-
-
-  try{
-
-    const {
-      data:{user},
-      error:userError
-    } =
-    await supabaseClient.auth.getUser();
-
-
-    if(userError || !user){
-
-      message.innerText =
-      "❌ पहले Login करें।";
-
-      return;
-    }
-
-
-    const budget =
-    budgetValue
-    ? Number(budgetValue)
-    : null;
-
-
-    const {error} =
-    await supabaseClient
-    .from("bookings")
-    .insert({
-
-      client_id:user.id,
-
-      professional_id:null,
-
-      category:selectedCategory,
-
-      work_details:workDetails,
-
-      location:location,
-
-      booking_date:bookingDate,
-
-      booking_time:bookingTime,
-
-      budget:budget,
-
-      status:"pending"
-
-    });
-
-
-    if(error){
-
-      message.innerText =
-      "❌ Booking save नहीं हुई: "
-      + error.message;
-
-      return;
-    }
-
-
-    message.innerText =
-    "✅ Booking request successfully भेज दी गई!";
-
-
-    setTimeout(() => {
-
-      closeBooking();
-
-    },1500);
-
-
-  }catch(error){
-
-    message.innerText =
-    "❌ Error: "
-    + error.message;
-
-  }
 
 }
 
@@ -1034,7 +985,8 @@ async function logout(){
 
   await supabaseClient.auth.signOut();
 
-  window.location.href="index.html";
+  window.location.href =
+    "index.html";
 
 }
 
