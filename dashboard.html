@@ -1,224 +1,430 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>My Construction - Dashboard</title>
+<title>My Construction</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{
+  box-sizing:border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
-    }
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f6f7fb;
+  color:#182230;
+}
 
-    header {
-      background: #1976d2;
-      color: white;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+header{
+  height:68px;
+  background:#111827;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
 
-    header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-    .menu-btn {
-      width: auto;
-      margin: 0;
-      padding: 8px 12px;
-      background: white;
-      color: #1976d2;
-      font-size: 22px;
-    }
+.logo-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:#f5b301;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+}
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 15px;
-    }
+.logo-text{
+  font-size:18px;
+  font-weight:bold;
+}
 
-    .welcome {
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
+.logo-sub{
+  font-size:10px;
+  color:#b8c0cc;
+  margin-top:2px;
+}
 
-    .welcome h3 {
-      margin-top: 0;
-    }
+.menu-button{
+  width:44px;
+  height:44px;
+  border:1px solid #374151;
+  border-radius:12px;
+  background:#1f2937;
+  color:white;
+  font-size:23px;
+  cursor:pointer;
+}
 
-    .search {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:18px;
+}
 
-    .house-card {
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
+/* HERO */
 
-    .house-card h3 {
-      margin-top: 0;
-    }
+.hero{
+  background:linear-gradient(135deg,#111827,#26364f);
+  color:white;
+  border-radius:22px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 10px 30px rgba(17,24,39,.18);
+}
 
-    .category-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+.hero small{
+  color:#cbd5e1;
+}
 
-    .category {
-      background: white;
-      padding: 15px;
-      border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-      text-align: center;
-    }
+.hero h1{
+  margin:8px 0;
+  font-size:27px;
+  line-height:1.2;
+}
 
-    .category .icon {
-      font-size: 35px;
-    }
+.hero p{
+  color:#dbe2ea;
+  line-height:1.5;
+  margin-bottom:18px;
+}
 
-    .category h3 {
-      font-size: 16px;
-      margin: 8px 0;
-    }
+.hero-search{
+  display:flex;
+  background:white;
+  border-radius:13px;
+  padding:5px;
+}
 
-    button {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 8px;
-      background: #1976d2;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
+.hero-search input{
+  flex:1;
+  border:0;
+  outline:0;
+  padding:12px;
+  font-size:15px;
+  min-width:0;
+}
 
-    .green {
-      background: #2e7d32;
-    }
+.search-icon{
+  width:44px;
+  border:0;
+  background:#f5b301;
+  border-radius:10px;
+  font-size:19px;
+}
 
-    .red {
-      background: #c62828;
-    }
+/* QUICK ACTIONS */
 
-    .side-menu {
-      display: none;
-      position: fixed;
-      right: 10px;
-      top: 65px;
-      width: 240px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 18px rgba(0,0,0,.2);
-      z-index: 20;
-      overflow: hidden;
-    }
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:22px;
+}
 
-    .side-menu button {
-      background: white;
-      color: #222;
-      text-align: left;
-      margin: 0;
-      border-radius: 0;
-      border-bottom: 1px solid #eee;
-    }
+.quick{
+  background:white;
+  border:1px solid #e8ebf0;
+  border-radius:15px;
+  padding:13px 8px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      z-index: 50;
-      padding: 15px;
-      overflow-y: auto;
-    }
+.quick-icon{
+  font-size:25px;
+}
 
-    .modal-box {
-      background: white;
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 20px;
-      border-radius: 15px;
-    }
+.quick span{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:6px;
+}
 
-    .modal-box h2 {
-      margin-top: 0;
-    }
+/* HOUSE */
 
-    .modal-box input,
-    .modal-box textarea,
-    .modal-box select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
+.house{
+  background:linear-gradient(135deg,#fff7d6,#fffdf5);
+  border:1px solid #f3dfa0;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:24px;
+}
 
-    .modal-box textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+.house-top{
+  display:flex;
+  gap:13px;
+  align-items:center;
+}
 
-    .close {
-      background: #777;
-    }
+.house-icon{
+  width:50px;
+  height:50px;
+  border-radius:15px;
+  background:#f5b301;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+}
 
-    .message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      display: none;
-      background: #eef3f7;
-    }
+.house h2{
+  font-size:18px;
+  margin:0 0 4px;
+}
 
-    .loading {
-      text-align: center;
-      padding: 20px;
-    }
+.house p{
+  margin:0;
+  color:#667085;
+  font-size:13px;
+  line-height:1.4;
+}
 
-    @media (max-width: 380px) {
-      .category-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.primary{
+  width:100%;
+  border:0;
+  background:#111827;
+  color:white;
+  padding:13px;
+  border-radius:11px;
+  margin-top:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* SECTION */
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:20px 2px 12px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:19px;
+}
+
+.section-title span{
+  font-size:12px;
+  color:#697386;
+}
+
+/* SERVICES */
+
+.service-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.service{
+  background:white;
+  border:1px solid #e7eaf0;
+  border-radius:18px;
+  padding:15px;
+  position:relative;
+  box-shadow:0 5px 15px rgba(0,0,0,.045);
+}
+
+.service-icon{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:#f3f4f6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+}
+
+.service h3{
+  margin:11px 0 4px;
+  font-size:16px;
+}
+
+.service p{
+  margin:0;
+  color:#7b8492;
+  font-size:12px;
+  min-height:30px;
+}
+
+.book{
+  width:100%;
+  border:0;
+  background:#f5b301;
+  color:#111827;
+  font-weight:bold;
+  padding:10px;
+  border-radius:9px;
+  margin-top:12px;
+  cursor:pointer;
+}
+
+.book:active,
+.primary:active{
+  transform:scale(.98);
+}
+
+/* MENU */
+
+.side-menu{
+  display:none;
+  position:fixed;
+  top:76px;
+  right:12px;
+  width:260px;
+  background:white;
+  border-radius:17px;
+  box-shadow:0 12px 35px rgba(0,0,0,.2);
+  overflow:hidden;
+  z-index:200;
+}
+
+.side-menu button{
+  width:100%;
+  background:white;
+  color:#202938;
+  border:0;
+  border-bottom:1px solid #edf0f3;
+  padding:15px;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.side-menu button:hover{
+  background:#f7f8fa;
+}
+
+.logout{
+  color:#c62828!important;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.68);
+  z-index:500;
+  padding:15px;
+  overflow:auto;
+}
+
+.modal-box{
+  background:white;
+  max-width:520px;
+  margin:30px auto;
+  border-radius:20px;
+  padding:20px;
+}
+
+.modal-box h2{
+  margin-top:0;
+}
+
+.modal-box input,
+.modal-box textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #d8dde5;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:15px;
+  outline:none;
+}
+
+.modal-box textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.send{
+  width:100%;
+  border:0;
+  background:#111827;
+  color:white;
+  padding:13px;
+  border-radius:10px;
+  margin-top:14px;
+  font-weight:bold;
+}
+
+.close{
+  width:100%;
+  border:0;
+  background:#edf0f3;
+  color:#333;
+  padding:12px;
+  border-radius:10px;
+  margin-top:8px;
+}
+
+.message{
+  display:none;
+  margin-top:12px;
+  padding:11px;
+  border-radius:9px;
+  background:#f1f5f9;
+  text-align:center;
+  font-size:13px;
+}
+
+/* MOBILE */
+
+@media(max-width:380px){
+  .container{
+    padding:12px;
+  }
+
+  .service-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:23px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h2>🏗️ My Construction</h2>
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+  <div class="logo">
+    <div class="logo-icon">🏗️</div>
+
+    <div>
+      <div class="logo-text">My Construction</div>
+      <div class="logo-sub">Build • Connect • Grow</div>
+    </div>
+  </div>
+
+  <button class="menu-button" onclick="toggleMenu()">☰</button>
+
 </header>
 
 
@@ -254,181 +460,236 @@
     ⚙️ Settings
   </button>
 
-  <button onclick="logout()" class="red">
+  <button class="logout" onclick="logout()">
     🚪 Logout
   </button>
 
 </div>
 
 
-<div class="container">
+<main class="container">
 
-  <div class="welcome">
-    <h3>👋 Welcome to My Construction</h3>
-    <p>अपने काम के लिए सही Labour, Thekedar और Professional खोजें।</p>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <small>WELCOME TO MY CONSTRUCTION</small>
+
+    <h1>आपके Construction काम का<br>एक Smart Platform</h1>
+
+    <p>
+      Labour, Thekedar और Construction Professionals
+      को आसानी से खोजें और सीधे Book करें।
+    </p>
+
+    <div class="hero-search">
+
+      <input
+        id="searchBox"
+        type="text"
+        placeholder="Labour, Electrician, Plumber..."
+        oninput="searchServices()"
+      >
+
+      <button class="search-icon">🔍</button>
+
+    </div>
+
+  </section>
+
+
+  <!-- QUICK ACTIONS -->
+
+  <div class="quick-grid">
+
+    <div class="quick" onclick="menuMessage('📅 My Bookings')">
+      <div class="quick-icon">📅</div>
+      <span>Bookings</span>
+    </div>
+
+    <div class="quick" onclick="menuMessage('🔔 Notifications')">
+      <div class="quick-icon">🔔</div>
+      <span>Alerts</span>
+    </div>
+
+    <div class="quick" onclick="menuMessage('👤 Edit Profile')">
+      <div class="quick-icon">👤</div>
+      <span>Profile</span>
+    </div>
+
   </div>
-
-
-  <input
-    type="text"
-    id="searchBox"
-    class="search"
-    placeholder="🔍 Labour, Thekedar, Electrician..."
-    oninput="searchCategories()"
-  >
 
 
   <!-- HOUSE PLANNER -->
 
-  <div class="house-card">
+  <section class="house">
 
-    <h3>🏠 मेरा घर बनाना है</h3>
+    <div class="house-top">
 
-    <p>
-      अपने घर की जानकारी देकर construction cost और preliminary house planning की शुरुआत करें।
-    </p>
+      <div class="house-icon">🏠</div>
 
-    <button onclick="startHousePlanning()">
-      🏠 Start My House Planning
+      <div>
+        <h2>मेरा घर बनाना है</h2>
+
+        <p>
+          अपने घर की जानकारी देकर
+          construction planning शुरू करें।
+        </p>
+      </div>
+
+    </div>
+
+    <button class="primary" onclick="startHousePlanning()">
+      Start My House Planning →
     </button>
+
+  </section>
+
+
+  <!-- SERVICES -->
+
+  <div class="section-title">
+
+    <h2>Construction Services</h2>
+
+    <span>सबसे जरूरी सेवाएँ</span>
 
   </div>
 
 
-  <h3>👷 Services</h3>
-
-  <div class="category-grid" id="categoryGrid">
+  <div class="service-grid" id="serviceGrid">
 
 
-    <div class="category" data-name="labour">
+    <div class="service" data-name="labour">
 
-      <div class="icon">👷</div>
+      <div class="service-icon">👷</div>
 
       <h3>Labour</h3>
 
       <p>Construction workers</p>
 
-      <button onclick="openBooking('Labour')">
+      <button class="book" onclick="openBooking('Labour')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="thekedar">
+    <div class="service" data-name="thekedar">
 
-      <div class="icon">👷‍♂️</div>
+      <div class="service-icon">👷‍♂️</div>
 
       <h3>Thekedar</h3>
 
       <p>Construction contractor</p>
 
-      <button onclick="openBooking('Thekedar')">
+      <button class="book" onclick="openBooking('Thekedar')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="electrician">
+    <div class="service" data-name="electrician">
 
-      <div class="icon">⚡</div>
+      <div class="service-icon">⚡</div>
 
       <h3>Electrician</h3>
 
       <p>Electrical work</p>
 
-      <button onclick="openBooking('Electrician')">
+      <button class="book" onclick="openBooking('Electrician')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="plumber">
+    <div class="service" data-name="plumber">
 
-      <div class="icon">🚰</div>
+      <div class="service-icon">🚰</div>
 
       <h3>Plumber</h3>
 
       <p>Plumbing work</p>
 
-      <button onclick="openBooking('Plumber')">
+      <button class="book" onclick="openBooking('Plumber')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="painter">
+    <div class="service" data-name="painter">
 
-      <div class="icon">🎨</div>
+      <div class="service-icon">🎨</div>
 
       <h3>Painter</h3>
 
       <p>Painting work</p>
 
-      <button onclick="openBooking('Painter')">
+      <button class="book" onclick="openBooking('Painter')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="mason">
+    <div class="service" data-name="mason">
 
-      <div class="icon">🧱</div>
+      <div class="service-icon">🧱</div>
 
       <h3>Mason</h3>
 
       <p>Raj Mistri / Mason</p>
 
-      <button onclick="openBooking('Mason')">
+      <button class="book" onclick="openBooking('Mason')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="carpenter">
+    <div class="service" data-name="carpenter">
 
-      <div class="icon">🪚</div>
+      <div class="service-icon">🪚</div>
 
       <h3>Carpenter</h3>
 
       <p>Wood work</p>
 
-      <button onclick="openBooking('Carpenter')">
+      <button class="book" onclick="openBooking('Carpenter')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="house designer">
+    <div class="service" data-name="house designer">
 
-      <div class="icon">📐</div>
+      <div class="service-icon">📐</div>
 
       <h3>House Designer</h3>
 
       <p>House planning & design</p>
 
-      <button onclick="openBooking('House Designer')">
+      <button class="book" onclick="openBooking('House Designer')">
         Book Now
       </button>
 
     </div>
 
 
-    <div class="category" data-name="other">
+    <div class="service" data-name="other">
 
-      <div class="icon">🔧</div>
+      <div class="service-icon">🔧</div>
 
       <h3>Other</h3>
 
       <p>Other professionals</p>
 
-      <button onclick="openBooking('Other')">
+      <button class="book" onclick="openBooking('Other')">
         Book Now
       </button>
 
@@ -436,7 +697,7 @@
 
   </div>
 
-</div>
+</main>
 
 
 <!-- BOOKING MODAL -->
@@ -445,13 +706,13 @@
 
   <div class="modal-box">
 
-    <h2>📅 Book Professional</h2>
+    <h2>📅 Booking Request</h2>
 
     <p id="selectedCategory"></p>
 
     <input
-      type="text"
       id="workDetails"
+      type="text"
       placeholder="काम का विवरण"
     >
 
@@ -461,28 +722,28 @@
     ></textarea>
 
     <input
-      type="date"
       id="bookingDate"
+      type="date"
     >
 
     <input
-      type="time"
       id="bookingTime"
+      type="time"
     >
 
     <input
-      type="number"
       id="bookingBudget"
-      placeholder="आपका Budget ₹"
+      type="number"
+      placeholder="Budget ₹"
       min="0"
     >
 
-    <button onclick="submitBooking()" class="green">
+    <button class="send" onclick="submitBooking()">
       📤 Send Booking Request
     </button>
 
-    <button onclick="closeBooking()" class="close">
-      ❌ Cancel
+    <button class="close" onclick="closeBooking()">
+      Cancel
     </button>
 
     <div id="bookingMessage" class="message"></div>
@@ -494,245 +755,288 @@
 
 <script>
 
-  // ==========================
-  // SUPABASE
-  // ==========================
+/* =========================
+   SUPABASE
+========================= */
 
-  const SUPABASE_URL =
-    "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+/*
+  IMPORTANT:
+  यहाँ अपनी current index.html वाली
+  publishable key डालें।
+*/
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+const SUPABASE_KEY =
+"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
-  let selectedCategory = "";
+let selectedCategory = "";
 
 
-  // ==========================
-  // MENU
-  // ==========================
+/* =========================
+   MENU
+========================= */
 
-  function toggleMenu() {
+function toggleMenu(){
 
-    const menu =
-      document.getElementById("sideMenu");
+  const menu =
+  document.getElementById("sideMenu");
 
-    if (menu.style.display === "block") {
-      menu.style.display = "none";
-    } else {
-      menu.style.display = "block";
-    }
+  menu.style.display =
+  menu.style.display === "block"
+  ? "none"
+  : "block";
+}
+
+
+function menuMessage(name){
+
+  document.getElementById("sideMenu")
+  .style.display="none";
+
+  alert(
+    name +
+    " अभी अगले feature में connect किया जाएगा।"
+  );
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchServices(){
+
+  const value =
+  document.getElementById("searchBox")
+  .value
+  .toLowerCase()
+  .trim();
+
+  const services =
+  document.querySelectorAll(".service");
+
+  services.forEach(service => {
+
+    const name =
+    service.getAttribute("data-name");
+
+    service.style.display =
+    name.includes(value)
+    ? "block"
+    : "none";
+
+  });
+}
+
+
+/* =========================
+   BOOKING OPEN
+========================= */
+
+function openBooking(category){
+
+  selectedCategory = category;
+
+  document.getElementById(
+    "selectedCategory"
+  ).innerText =
+  "Selected Service: " + category;
+
+  document.getElementById(
+    "bookingMessage"
+  ).style.display="none";
+
+  document.getElementById(
+    "bookingModal"
+  ).style.display="block";
+}
+
+
+/* =========================
+   BOOKING CLOSE
+========================= */
+
+function closeBooking(){
+
+  document.getElementById(
+    "bookingModal"
+  ).style.display="none";
+
+}
+
+
+/* =========================
+   SEND BOOKING
+========================= */
+
+async function submitBooking(){
+
+  const workDetails =
+  document.getElementById(
+    "workDetails"
+  ).value.trim();
+
+  const location =
+  document.getElementById(
+    "bookingLocation"
+  ).value.trim();
+
+  const bookingDate =
+  document.getElementById(
+    "bookingDate"
+  ).value;
+
+  const bookingTime =
+  document.getElementById(
+    "bookingTime"
+  ).value;
+
+  const budgetValue =
+  document.getElementById(
+    "bookingBudget"
+  ).value;
+
+  const message =
+  document.getElementById(
+    "bookingMessage"
+  );
+
+  message.style.display="block";
+
+
+  if(
+    !workDetails ||
+    !location ||
+    !bookingDate ||
+    !bookingTime
+  ){
+
+    message.innerText =
+    "⚠️ कृपया जरूरी जानकारी भरें।";
+
+    return;
   }
 
 
-  function menuMessage(name) {
-
-    document.getElementById("sideMenu").style.display = "none";
-
-    alert(name + " — यह option अगली step में connect किया जाएगा।");
-  }
+  message.innerText =
+  "⏳ Booking request भेजी जा रही है...";
 
 
-  // ==========================
-  // SEARCH
-  // ==========================
+  try{
 
-  function searchCategories() {
-
-    const value =
-      document.getElementById("searchBox").value
-      .toLowerCase();
-
-    const cards =
-      document.querySelectorAll(".category");
-
-    cards.forEach(card => {
-
-      const name =
-        card.getAttribute("data-name");
-
-      if (name.includes(value)) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
-
-    });
-  }
+    const {
+      data:{user},
+      error:userError
+    } =
+    await supabaseClient.auth.getUser();
 
 
-  // ==========================
-  // OPEN BOOKING
-  // ==========================
-
-  function openBooking(category) {
-
-    selectedCategory = category;
-
-    document.getElementById("selectedCategory").innerText =
-      "आप " + category + " को book कर रहे हैं।";
-
-    document.getElementById("bookingMessage").style.display = "none";
-
-    document.getElementById("bookingModal").style.display = "block";
-  }
-
-
-  // ==========================
-  // CLOSE BOOKING
-  // ==========================
-
-  function closeBooking() {
-
-    document.getElementById("bookingModal").style.display = "none";
-
-    document.getElementById("workDetails").value = "";
-    document.getElementById("bookingLocation").value = "";
-    document.getElementById("bookingDate").value = "";
-    document.getElementById("bookingTime").value = "";
-    document.getElementById("bookingBudget").value = "";
-  }
-
-
-  // ==========================
-  // SUBMIT BOOKING
-  // ==========================
-
-  async function submitBooking() {
-
-    const workDetails =
-      document.getElementById("workDetails").value.trim();
-
-    const location =
-      document.getElementById("bookingLocation").value.trim();
-
-    const bookingDate =
-      document.getElementById("bookingDate").value;
-
-    const bookingTime =
-      document.getElementById("bookingTime").value;
-
-    const budgetValue =
-      document.getElementById("bookingBudget").value;
-
-    const message =
-      document.getElementById("bookingMessage");
-
-    message.style.display = "block";
-
-
-    if (
-      !workDetails ||
-      !location ||
-      !bookingDate ||
-      !bookingTime
-    ) {
+    if(userError || !user){
 
       message.innerText =
-        "⚠️ कृपया सभी जरूरी जानकारी भरें।";
+      "❌ पहले Login करें।";
+
+      return;
+    }
+
+
+    const budget =
+    budgetValue
+    ? Number(budgetValue)
+    : null;
+
+
+    const {error} =
+    await supabaseClient
+    .from("bookings")
+    .insert({
+
+      client_id:user.id,
+
+      professional_id:null,
+
+      category:selectedCategory,
+
+      work_details:workDetails,
+
+      location:location,
+
+      booking_date:bookingDate,
+
+      booking_time:bookingTime,
+
+      budget:budget,
+
+      status:"pending"
+
+    });
+
+
+    if(error){
+
+      message.innerText =
+      "❌ Booking save नहीं हुई: "
+      + error.message;
 
       return;
     }
 
 
     message.innerText =
-      "⏳ Booking request भेजी जा रही है...";
+    "✅ Booking request successfully भेज दी गई!";
 
 
-    try {
+    setTimeout(() => {
 
-      const {
-        data: { user },
-        error: userError
-      } = await supabaseClient.auth.getUser();
+      closeBooking();
 
-
-      if (userError || !user) {
-
-        message.innerText =
-          "❌ पहले Login करें।";
-
-        return;
-      }
+    },1500);
 
 
-      const budget =
-        budgetValue ? Number(budgetValue) : null;
+  }catch(error){
 
-
-      const { error } =
-        await supabaseClient
-        .from("bookings")
-        .insert({
-          client_id: user.id,
-          professional_id: null,
-          category: selectedCategory,
-          work_details: workDetails,
-          location: location,
-          booking_date: bookingDate,
-          booking_time: bookingTime,
-          budget: budget,
-          status: "pending"
-        });
-
-
-      if (error) {
-
-        message.innerText =
-          "❌ Booking save नहीं हुई: " + error.message;
-
-        return;
-      }
-
-
-      message.innerText =
-        "✅ Booking request successfully भेज दी गई!";
-
-
-      setTimeout(() => {
-        closeBooking();
-      }, 1500);
-
-
-    } catch (err) {
-
-      message.innerText =
-        "❌ Error: " + err.message;
-
-    }
-  }
-
-
-  // ==========================
-  // HOUSE PLANNING
-  // ==========================
-
-  function startHousePlanning() {
-
-    alert(
-      "🏠 House Planning feature अगली step में बनाया जाएगा।"
-    );
+    message.innerText =
+    "❌ Error: "
+    + error.message;
 
   }
 
+}
 
-  // ==========================
-  // LOGOUT
-  // ==========================
 
-  async function logout() {
+/* =========================
+   HOUSE PLANNING
+========================= */
 
-    await supabaseClient.auth.signOut();
+function startHousePlanning(){
 
-    window.location.href = "index.html";
+  alert(
+    "🏠 House Planning जल्द ही उपलब्ध होगा।"
+  );
 
-  }
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href="index.html";
+
+}
 
 </script>
 
