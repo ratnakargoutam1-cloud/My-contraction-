@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Works - My Construction</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#222;
+}
+
+.header{
+  background:#111827;
+  color:white;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header h2{
+  margin:0;
+  font-size:20px;
+}
+
+.back{
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.container{
+  padding:18px;
+  max-width:700px;
+  margin:auto;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.top h3{
+  margin:0;
+}
+
+.add-btn{
+  background:#16a34a;
+  color:white;
+  border:0;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.title{
+  font-size:19px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.row{
+  margin:7px 0;
+  color:#555;
+  font-size:14px;
+}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.open{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.closed{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.loading,
+.empty,
+.error{
+  text-align:center;
+  padding:30px 10px;
+  color:#666;
+}
+
+.error{
+  color:#dc2626;
+}
+
+.work-btn{
+  margin-top:12px;
+  width:100%;
+  padding:11px;
+  border:0;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+}
+
+.close-btn{
+  background:#dc2626;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>🏗️ My Construction</h2>
+  <a class="back" href="dashboard.html">← Dashboard</a>
+</div>
+
+<div class="container">
+
+  <div class="top">
+    <h3>📋 My Works</h3>
+    <button class="add-btn" onclick="addWork()">➕ Add Work</button>
+  </div>
+
+  <div id="worksList">
+    <div class="loading">⏳ Works load हो रहे हैं...</div>
+  </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+/*
+  अपनी existing publishable key यहाँ रखें।
+  पुरानी key को बदलने की जरूरत नहीं है।
+*/
+const SUPABASE_KEY = "YOUR_CURRENT_PUBLISHABLE_KEY";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+async function loadWorks(){
+
+  const list = document.getElementById("worksList");
+
+  list.innerHTML =
+    '<div class="loading">⏳ Works load हो रहे हैं...</div>';
+
+  try{
+
+    const {
+      data:{user},
+      error:userError
+    } = await supabaseClient.auth.getUser();
+
+    if(userError || !user){
+
+      list.innerHTML =
+        '<div class="error">❌ पहले Login करें।</div>';
+
+      return;
+    }
+
+
+    const {data,error} = await supabaseClient
+      .from("Works")
+      .select("*")
+      .eq("thekedar_id",user.id)
+      .order("created_at",{ascending:false});
+
+
+    if(error){
+
+      console.error(error);
+
+      list.innerHTML =
+        '<div class="error">❌ Works load नहीं हो पाए।<br><br>' +
+        error.message +
+        '</div>';
+
+      return;
+    }
+
+
+    if(!data || data.length === 0){
+
+      list.innerHTML = `
+        <div class="empty">
+          📭 अभी आपने कोई Work Publish नहीं किया है।<br><br>
+          <button class="add-btn" onclick="addWork()">
+            ➕ पहला Work Add करें
+          </button>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    data.forEach(work => {
+
+      const status =
+        (work.Status || "open").toLowerCase();
+
+      const isOpen = status === "open";
+
+
+      const card = document.createElement("div");
+
+      card.className = "card";
+
+
+      card.innerHTML = `
+
+        <div class="title">
+          ${escapeHTML(work.Title || "Untitled Work")}
+        </div>
+
+        <div class="row">
+          📝 ${escapeHTML(work.Description || "Description नहीं है")}
+        </div>
+
+        <div class="row">
+          🛠️ Skill:
+          ${escapeHTML(work.Skill_required || "-")}
+        </div>
+
+        <div class="row">
+          📍 Location:
+          ${escapeHTML(work.Location || "-")}
+        </div>
+
+        <div class="row">
+          💰 Daily Wage:
+          ₹${work.Daily_wage ?? "-"}
+        </div>
+
+        <div class="row">
+          👷 Workers Needed:
+          ${work.Workers_needed ?? "-"}
+        </div>
+
+        <div class="row">
+          📅 Start Date:
+          ${work.Start_date || "-"}
+        </div>
+
+        <span class="status ${isOpen ? "open" : "closed"}">
+          ${isOpen ? "🟢 OPEN" : "🔴 " + status.toUpperCase()}
+        </span>
+
+        ${
+          isOpen
+          ?
+          `<button
+             class="work-btn close-btn"
+             onclick="closeWork('${work.id}')">
+             🔴 Work Close करें
+           </button>`
+          :
+          `<button
+             class="work-btn"
+             onclick="openWork('${work.id}')">
+             🟢 Work Open करें
+           </button>`
+        }
+
+      `;
+
+
+      list.appendChild(card);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerHTML =
+      '<div class="error">❌ कुछ समस्या हुई।</div>';
+
+  }
+
+}
+
+
+async function closeWork(id){
+
+  const confirmClose =
+    confirm("क्या आप यह Work Close करना चाहते हैं?");
+
+  if(!confirmClose) return;
+
+
+  const {error} = await supabaseClient
+    .from("Works")
+    .update({Status:"closed"})
+    .eq("id",id);
+
+
+  if(error){
+
+    alert("❌ Work Close नहीं हुआ: " + error.message);
+
+    return;
+  }
+
+
+  alert("✅ Work Close हो गया।");
+
+  loadWorks();
+
+}
+
+
+async function openWork(id){
+
+  const {error} = await supabaseClient
+    .from("Works")
+    .update({Status:"open"})
+    .eq("id",id);
+
+
+  if(error){
+
+    alert("❌ Work Open नहीं हुआ: " + error.message);
+
+    return;
+  }
+
+
+  alert("✅ Work फिर से Open हो गया।");
+
+  loadWorks();
+
+}
+
+
+function addWork(){
+
+  window.location.href = "add-work.html";
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+loadWorks();
+
+</script>
+
+</body>
+</html>
