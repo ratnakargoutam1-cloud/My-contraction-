@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Work - My Construction</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f6f7fb;
+  color:#182230;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.back{
+  border:0;
+  background:#1f2937;
+  color:white;
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  font-size:20px;
+}
+
+.container{
+  max-width:650px;
+  margin:auto;
+  padding:18px;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+}
+
+h1{
+  margin:0 0 6px;
+  font-size:23px;
+}
+
+.subtitle{
+  color:#697386;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin-top:14px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:13px;
+  margin-top:7px;
+  border:1px solid #d8dde5;
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
+  background:white;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+button.publish{
+  width:100%;
+  border:0;
+  background:#f5b301;
+  color:#111827;
+  padding:14px;
+  border-radius:11px;
+  margin-top:20px;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.message{
+  display:none;
+  margin-top:15px;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-size:13px;
+  background:#f1f5f9;
+}
+
+@media(max-width:450px){
+  .row{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <button class="back" onclick="goBack()">←</button>
+
+  <div>
+    <b>🏗️ My Construction</b><br>
+    <small>Thekedar Work Management</small>
+  </div>
+
+</header>
+
+
+<main class="container">
+
+<div class="card">
+
+  <h1>➕ नया काम जोड़ें</h1>
+
+  <div class="subtitle">
+    अपने construction work की जानकारी भरकर publish करें।
+  </div>
+
+
+  <label>काम का नाम *</label>
+
+  <input
+    id="title"
+    type="text"
+    placeholder="जैसे: मकान निर्माण"
+  >
+
+
+  <label>काम की जानकारी *</label>
+
+  <textarea
+    id="description"
+    placeholder="काम के बारे में पूरी जानकारी लिखें..."
+  ></textarea>
+
+
+  <label>किस skill की जरूरत है?</label>
+
+  <select id="skill">
+
+    <option value="">Skill चुनें</option>
+
+    <option value="Labour">Labour</option>
+
+    <option value="Mason">Mason / Raj Mistri</option>
+
+    <option value="Electrician">Electrician</option>
+
+    <option value="Plumber">Plumber</option>
+
+    <option value="Painter">Painter</option>
+
+    <option value="Carpenter">Carpenter</option>
+
+    <option value="Other">Other</option>
+
+  </select>
+
+
+  <label>काम की Location *</label>
+
+  <input
+    id="location"
+    type="text"
+    placeholder="जैसे: Bhind, Madhya Pradesh"
+  >
+
+
+  <div class="row">
+
+    <div>
+
+      <label>Daily Wage ₹</label>
+
+      <input
+        id="dailyWage"
+        type="number"
+        min="0"
+        placeholder="800"
+      >
+
+    </div>
+
+
+    <div>
+
+      <label>Workers Needed</label>
+
+      <input
+        id="workersNeeded"
+        type="number"
+        min="1"
+        value="1"
+        placeholder="2"
+      >
+
+    </div>
+
+  </div>
+
+
+  <label>काम शुरू होने की तारीख *</label>
+
+  <input
+    id="startDate"
+    type="date"
+  >
+
+
+  <button
+    class="publish"
+    onclick="publishWork()">
+
+    🚀 काम Publish करें
+
+  </button>
+
+
+  <div
+    id="message"
+    class="message">
+  </div>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+"YOUR_CURRENT_PUBLISHABLE_KEY";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =========================
+   BACK
+========================= */
+
+function goBack(){
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text){
+
+  const box =
+    document.getElementById("message");
+
+  box.innerText = text;
+
+  box.style.display = "block";
+
+}
+
+
+/* =========================
+   PUBLISH WORK
+========================= */
+
+async function publishWork(){
+
+  const title =
+    document.getElementById("title").value.trim();
+
+  const description =
+    document.getElementById("description").value.trim();
+
+  const skill =
+    document.getElementById("skill").value;
+
+  const location =
+    document.getElementById("location").value.trim();
+
+  const dailyWage =
+    document.getElementById("dailyWage").value;
+
+  const workersNeeded =
+    document.getElementById("workersNeeded").value;
+
+  const startDate =
+    document.getElementById("startDate").value;
+
+
+  if(!title ||
+     !description ||
+     !location ||
+     !startDate){
+
+    showMessage(
+      "⚠️ कृपया सभी जरूरी जानकारी भरें।"
+    );
+
+    return;
+  }
+
+
+  const {
+    data:{user},
+    error:userError
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if(userError || !user){
+
+    showMessage(
+      "❌ पहले Login करें।"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "⏳ काम Publish हो रहा है..."
+  );
+
+
+  const {data,error} =
+    await supabaseClient
+    .from("Works")
+    .insert({
+
+      thekedar_id:user.id,
+
+      Title:title,
+
+      Description:description,
+
+      Skill_required:skill,
+
+      Location:location,
+
+      Daily_wage:
+        dailyWage
+        ? Number(dailyWage)
+        : null,
+
+      Workers_needed:
+        workersNeeded
+        ? Number(workersNeeded)
+        : 1,
+
+      Status:"open",
+
+      Start_date:startDate
+
+    })
+    .select()
+    .single();
+
+
+  if(error){
+
+    console.error(error);
+
+    showMessage(
+      "❌ Work save नहीं हुआ: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "✅ आपका काम successfully publish हो गया!"
+  );
+
+
+  setTimeout(function(){
+
+    window.location.href =
+      "dashboard.html";
+
+  },1500);
+
+}
+
+</script>
+
+</body>
+</html>
