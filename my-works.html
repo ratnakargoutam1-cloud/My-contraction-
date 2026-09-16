@@ -16,17 +16,17 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f7fb;
+  background:#f4f6f8;
   color:#222;
 }
 
 .header{
   background:#111827;
   color:white;
-  padding:18px 16px;
+  padding:16px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 
 .header h2{
@@ -37,13 +37,12 @@ body{
 .back{
   color:white;
   text-decoration:none;
-  font-size:14px;
 }
 
 .container{
-  padding:18px;
   max-width:700px;
   margin:auto;
+  padding:18px;
 }
 
 .top{
@@ -57,10 +56,10 @@ body{
   margin:0;
 }
 
-.add-btn{
+.add{
+  border:0;
   background:#16a34a;
   color:white;
-  border:0;
   padding:10px 14px;
   border-radius:10px;
   font-weight:bold;
@@ -68,19 +67,19 @@ body{
 
 .card{
   background:white;
-  border-radius:16px;
   padding:18px;
+  border-radius:16px;
   margin-bottom:15px;
-  box-shadow:0 4px 15px rgba(0,0,0,.08);
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 .title{
-  font-size:19px;
+  font-size:20px;
   font-weight:bold;
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
-.row{
+.info{
   margin:7px 0;
   color:#555;
   font-size:14px;
@@ -88,11 +87,11 @@ body{
 
 .status{
   display:inline-block;
-  padding:6px 10px;
+  margin-top:8px;
+  padding:6px 12px;
   border-radius:20px;
   font-size:12px;
   font-weight:bold;
-  margin-top:8px;
 }
 
 .open{
@@ -105,21 +104,21 @@ body{
   color:#991b1b;
 }
 
-.loading,
-.empty,
-.error{
+.message{
   text-align:center;
   padding:30px 10px;
-  color:#666;
 }
 
 .error{
   color:#dc2626;
+  background:#fee2e2;
+  border-radius:12px;
+  padding:15px;
 }
 
-.work-btn{
-  margin-top:12px;
+button.action{
   width:100%;
+  margin-top:12px;
   padding:11px;
   border:0;
   border-radius:10px;
@@ -127,11 +126,6 @@ body{
   color:white;
   font-weight:bold;
 }
-
-.close-btn{
-  background:#dc2626;
-}
-
 </style>
 </head>
 
@@ -139,33 +133,38 @@ body{
 
 <div class="header">
   <h2>🏗️ My Construction</h2>
-  <a class="back" href="dashboard.html">← Dashboard</a>
+  <a class="back" href="dashboard.html">← वापस</a>
 </div>
 
 <div class="container">
 
   <div class="top">
-    <h3>📋 My Works</h3>
-    <button class="add-btn" onclick="addWork()">➕ Add Work</button>
+    <h3>📋 मेरे Works</h3>
+
+    <button class="add" onclick="addWork()">
+      ➕ Add Work
+    </button>
   </div>
 
-  <div id="worksList">
-    <div class="loading">⏳ Works load हो रहे हैं...</div>
+  <div id="works">
+    <div class="message">
+      ⏳ Works load हो रहे हैं...
+    </div>
   </div>
 
 </div>
 
+
 <script>
 
-const SUPABASE_URL = "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-/*
-  अपनी existing publishable key यहाँ रखें।
-  पुरानी key को बदलने की जरूरत नहीं है।
-*/
-const SUPABASE_KEY = "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+const SUPABASE_KEY =
+"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
 
-const supabaseClient = supabase.createClient(
+const supabaseClient =
+supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -173,55 +172,23 @@ const supabaseClient = supabase.createClient(
 
 async function loadWorks(){
 
-  const list = document.getElementById("worksList");
-
-  list.innerHTML =
-    '<div class="loading">⏳ Works load हो रहे हैं...</div>';
+  const box =
+  document.getElementById("works");
 
   try{
 
-    const {
-      data:{user},
-      error:userError
-    } = await supabaseClient.auth.getUser();
+    const sessionResult =
+    await supabaseClient.auth.getSession();
 
-    if(userError || !user){
+    const session =
+    sessionResult.data.session;
 
-      list.innerHTML =
-        '<div class="error">❌ पहले Login करें।</div>';
+    if(!session){
 
-      return;
-    }
-
-
-    const {data,error} = await supabaseClient
-      .from("Works")
-      .select("*")
-      .eq("thekedar_id",user.id)
-      .order("created_at",{ascending:false});
-
-
-    if(error){
-
-      console.error(error);
-
-      list.innerHTML =
-        '<div class="error">❌ Works load नहीं हो पाए।<br><br>' +
-        error.message +
-        '</div>';
-
-      return;
-    }
-
-
-    if(!data || data.length === 0){
-
-      list.innerHTML = `
-        <div class="empty">
-          📭 अभी आपने कोई Work Publish नहीं किया है।<br><br>
-          <button class="add-btn" onclick="addWork()">
-            ➕ पहला Work Add करें
-          </button>
+      box.innerHTML = `
+        <div class="message error">
+          ❌ Login नहीं है।<br><br>
+          पहले Login करें।
         </div>
       `;
 
@@ -229,72 +196,127 @@ async function loadWorks(){
     }
 
 
-    list.innerHTML = "";
+    const userId =
+    session.user.id;
 
 
-    data.forEach(work => {
+    console.log("Current User ID:",userId);
+
+
+    const result =
+    await supabaseClient
+      .from("Works")
+      .select("*")
+      .eq("thekedar_id",userId)
+      .order("created_at",{ascending:false});
+
+
+    console.log("Works result:",result);
+
+
+    if(result.error){
+
+      box.innerHTML = `
+        <div class="message error">
+          ❌ Works load नहीं हुए।<br><br>
+          ${result.error.message}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const data =
+    result.data;
+
+
+    if(!data || data.length === 0){
+
+      box.innerHTML = `
+        <div class="message">
+          📭 अभी कोई Work नहीं मिला।
+          <br><br>
+          <small>
+            Login User ID: ${userId}
+          </small>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    data.forEach(function(work){
 
       const status =
-        (work.Status || "open").toLowerCase();
+      String(work.Status || "open").toLowerCase();
 
-      const isOpen = status === "open";
+      const statusClass =
+      status === "open"
+      ? "open"
+      : "closed";
 
 
-      const card = document.createElement("div");
+      const card =
+      document.createElement("div");
 
-      card.className = "card";
+      card.className="card";
 
 
       card.innerHTML = `
 
         <div class="title">
-          ${escapeHTML(work.Title || "Untitled Work")}
+          🏗️ ${safe(work.Title)}
         </div>
 
-        <div class="row">
-          📝 ${escapeHTML(work.Description || "Description नहीं है")}
+        <div class="info">
+          📝 ${safe(work.Description)}
         </div>
 
-        <div class="row">
+        <div class="info">
           🛠️ Skill:
-          ${escapeHTML(work.Skill_required || "-")}
+          ${safe(work.Skill_required)}
         </div>
 
-        <div class="row">
+        <div class="info">
           📍 Location:
-          ${escapeHTML(work.Location || "-")}
+          ${safe(work.Location)}
         </div>
 
-        <div class="row">
+        <div class="info">
           💰 Daily Wage:
           ₹${work.Daily_wage ?? "-"}
         </div>
 
-        <div class="row">
+        <div class="info">
           👷 Workers Needed:
           ${work.Workers_needed ?? "-"}
         </div>
 
-        <div class="row">
+        <div class="info">
           📅 Start Date:
-          ${work.Start_date || "-"}
+          ${work.Start_date ?? "-"}
         </div>
 
-        <span class="status ${isOpen ? "open" : "closed"}">
-          ${isOpen ? "🟢 OPEN" : "🔴 " + status.toUpperCase()}
-        </span>
+        <div class="status ${statusClass}">
+          ${status === "open" ? "🟢 OPEN" : "🔴 " + status.toUpperCase()}
+        </div>
 
         ${
-          isOpen
+          status === "open"
           ?
           `<button
-             class="work-btn close-btn"
+             class="action"
              onclick="closeWork('${work.id}')">
              🔴 Work Close करें
            </button>`
           :
           `<button
-             class="work-btn"
+             class="action"
              onclick="openWork('${work.id}')">
              🟢 Work Open करें
            </button>`
@@ -303,16 +325,21 @@ async function loadWorks(){
       `;
 
 
-      list.appendChild(card);
+      box.appendChild(card);
 
     });
 
-  }catch(error){
+  }
+  catch(error){
 
     console.error(error);
 
-    list.innerHTML =
-      '<div class="error">❌ कुछ समस्या हुई।</div>';
+    box.innerHTML = `
+      <div class="message error">
+        ❌ Error आया।<br><br>
+        ${error.message}
+      </div>
+    `;
 
   }
 
@@ -321,21 +348,27 @@ async function loadWorks(){
 
 async function closeWork(id){
 
-  const confirmClose =
-    confirm("क्या आप यह Work Close करना चाहते हैं?");
+  const yes =
+  confirm("क्या आप यह Work Close करना चाहते हैं?");
 
-  if(!confirmClose) return;
+  if(!yes) return;
 
 
-  const {error} = await supabaseClient
+  const result =
+  await supabaseClient
     .from("Works")
-    .update({Status:"closed"})
+    .update({
+      Status:"closed"
+    })
     .eq("id",id);
 
 
-  if(error){
+  if(result.error){
 
-    alert("❌ Work Close नहीं हुआ: " + error.message);
+    alert(
+      "❌ Error: " +
+      result.error.message
+    );
 
     return;
   }
@@ -350,15 +383,21 @@ async function closeWork(id){
 
 async function openWork(id){
 
-  const {error} = await supabaseClient
+  const result =
+  await supabaseClient
     .from("Works")
-    .update({Status:"open"})
+    .update({
+      Status:"open"
+    })
     .eq("id",id);
 
 
-  if(error){
+  if(result.error){
 
-    alert("❌ Work Open नहीं हुआ: " + error.message);
+    alert(
+      "❌ Error: " +
+      result.error.message
+    );
 
     return;
   }
@@ -373,12 +412,20 @@ async function openWork(id){
 
 function addWork(){
 
-  window.location.href = "add-work.html";
+  window.location.href =
+  "add-work.html";
 
 }
 
 
-function escapeHTML(value){
+function safe(value){
+
+  if(value === null ||
+     value === undefined ||
+     value === ""){
+
+    return "-";
+  }
 
   return String(value)
     .replaceAll("&","&amp;")
