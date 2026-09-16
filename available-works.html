@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Available Works - My Construction</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#222;
+}
+
+.header{
+  background:#111827;
+  color:white;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header h2{
+  margin:0;
+  font-size:19px;
+}
+
+.back{
+  color:white;
+  text-decoration:none;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:18px;
+}
+
+h3{
+  margin-top:0;
+}
+
+.card{
+  background:white;
+  padding:18px;
+  margin-bottom:15px;
+  border-radius:16px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.title{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.info{
+  margin:7px 0;
+  color:#555;
+  font-size:14px;
+}
+
+.status{
+  display:inline-block;
+  background:#dcfce7;
+  color:#166534;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.apply{
+  width:100%;
+  border:0;
+  background:#2563eb;
+  color:white;
+  padding:12px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:bold;
+  margin-top:14px;
+}
+
+.message{
+  text-align:center;
+  padding:30px 10px;
+}
+
+.error{
+  color:#dc2626;
+}
+
+#applyBox{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  padding:20px;
+}
+
+.modal{
+  background:white;
+  max-width:500px;
+  margin:60px auto;
+  padding:20px;
+  border-radius:16px;
+}
+
+.modal h3{
+  margin-top:0;
+}
+
+textarea{
+  width:100%;
+  min-height:120px;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  resize:vertical;
+}
+
+.modal button{
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.send{
+  background:#16a34a;
+  color:white;
+}
+
+.cancel{
+  background:#e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>🏗️ My Construction</h2>
+  <a class="back" href="dashboard.html">← Dashboard</a>
+</div>
+
+<div class="container">
+
+  <h3>🏗️ Available Works</h3>
+
+  <div id="works">
+    <div class="message">
+      ⏳ Works load हो रहे हैं...
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Apply Popup -->
+
+<div id="applyBox">
+
+  <div class="modal">
+
+    <h3>🙋 Work के लिए Apply करें</h3>
+
+    <p id="selectedWork"></p>
+
+    <textarea
+      id="message"
+      placeholder="Thekedar को अपना message लिखें...">
+    </textarea>
+
+    <button class="send" onclick="submitApplication()">
+      ✅ Apply Now
+    </button>
+
+    <button class="cancel" onclick="closeApply()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let selectedWorkId = null;
+
+
+async function loadWorks(){
+
+  const box =
+    document.getElementById("works");
+
+  try{
+
+    const result =
+      await supabaseClient
+      .from("Works")
+      .select("*")
+      .eq("Status","open")
+      .order("created_at",{ascending:false});
+
+
+    if(result.error){
+
+      box.innerHTML =
+        `<div class="message error">
+          ❌ Works load नहीं हुए।<br><br>
+          ${result.error.message}
+        </div>`;
+
+      return;
+    }
+
+
+    const data = result.data;
+
+
+    if(!data || data.length === 0){
+
+      box.innerHTML =
+        `<div class="message">
+          📭 अभी कोई Open Work उपलब्ध नहीं है।
+        </div>`;
+
+      return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    data.forEach(function(work){
+
+      const card =
+        document.createElement("div");
+
+      card.className = "card";
+
+
+      card.innerHTML = `
+
+        <div class="title">
+          🏗️ ${safe(work.Title)}
+        </div>
+
+        <div class="info">
+          📝 ${safe(work.Description)}
+        </div>
+
+        <div class="info">
+          🛠️ Skill:
+          ${safe(work.Skill_required)}
+        </div>
+
+        <div class="info">
+          📍 Location:
+          ${safe(work.Location)}
+        </div>
+
+        <div class="info">
+          💰 Daily Wage:
+          ₹${work.Daily_wage ?? "-"}
+        </div>
+
+        <div class="info">
+          👷 Workers Needed:
+          ${work.Workers_needed ?? "-"}
+        </div>
+
+        <div class="info">
+          📅 Start Date:
+          ${work.Start_date ?? "-"}
+        </div>
+
+        <span class="status">
+          🟢 OPEN
+        </span>
+
+        <button
+          class="apply"
+          onclick="openApply(
+            '${work.id}',
+            '${safeJS(work.Title)}'
+          )">
+
+          🙋 Apply Now
+
+        </button>
+
+      `;
+
+      box.appendChild(card);
+
+    });
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      `<div class="message error">
+        ❌ ${error.message}
+      </div>`;
+
+  }
+
+}
+
+
+function openApply(id,title){
+
+  selectedWorkId = id;
+
+  document.getElementById("selectedWork").innerText =
+    "Work: " + title;
+
+  document.getElementById("message").value = "";
+
+  document.getElementById("applyBox").style.display =
+    "block";
+
+}
+
+
+function closeApply(){
+
+  document.getElementById("applyBox").style.display =
+    "none";
+
+  selectedWorkId = null;
+
+}
+
+
+async function submitApplication(){
+
+  if(!selectedWorkId){
+
+    alert("❌ Work select नहीं हुआ।");
+
+    return;
+  }
+
+
+  const message =
+    document.getElementById("message").value.trim();
+
+
+  const userResult =
+    await supabaseClient.auth.getUser();
+
+
+  if(userResult.error || !userResult.data.user){
+
+    alert("❌ पहले Labour account से Login करें।");
+
+    return;
+  }
+
+
+  const user =
+    userResult.data.user;
+
+
+  const result =
+    await supabaseClient
+      .from("job_applications")
+      .insert({
+
+        work_id:selectedWorkId,
+
+        labour_id:user.id,
+
+        status:"pending",
+
+        message:message
+
+      });
+
+
+  if(result.error){
+
+    if(
+      result.error.message
+      .toLowerCase()
+      .includes("duplicate")
+    ){
+
+      alert(
+        "⚠️ आपने इस Work के लिए पहले ही Apply किया है।"
+      );
+
+    }
+    else{
+
+      alert(
+        "❌ Application नहीं भेजी गई:\n\n" +
+        result.error.message
+      );
+
+    }
+
+    return;
+  }
+
+
+  alert(
+    "✅ Application successfully भेज दी गई!"
+  );
+
+  closeApply();
+
+}
+
+
+function safe(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+
+    return "-";
+
+  }
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function safeJS(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+  return String(value)
+    .replaceAll("\\","\\\\")
+    .replaceAll("'","\\'")
+    .replaceAll("\n"," ");
+
+}
+
+
+loadWorks();
+
+</script>
+
+</body>
+</html>
