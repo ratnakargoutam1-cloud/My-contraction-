@@ -67,7 +67,6 @@ header{
   background:#1f2937;
   color:white;
   font-size:23px;
-  cursor:pointer;
 }
 
 .container{
@@ -85,7 +84,20 @@ header{
   box-shadow:0 10px 30px rgba(17,24,39,.18);
 }
 
-.hero small{color:#cbd5e1}
+.hero small{
+  color:#cbd5e1;
+}
+
+.badge{
+  display:inline-block;
+  background:#f5b301;
+  color:#111827;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
 
 .hero h1{
   margin:8px 0;
@@ -97,17 +109,6 @@ header{
   color:#dbe2ea;
   line-height:1.5;
   margin-bottom:18px;
-}
-
-.badge{
-  display:inline-block;
-  background:#f5b301;
-  color:#111827;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:5px;
 }
 
 .hero-search{
@@ -123,7 +124,6 @@ header{
   outline:0;
   padding:12px;
   font-size:15px;
-  min-width:0;
 }
 
 .search-icon{
@@ -151,7 +151,9 @@ header{
   box-shadow:0 4px 12px rgba(0,0,0,.04);
 }
 
-.quick-icon{font-size:25px}
+.quick-icon{
+  font-size:25px;
+}
 
 .quick span{
   display:block;
@@ -232,7 +234,6 @@ header{
   margin:0;
   color:#667085;
   font-size:13px;
-  line-height:1.4;
 }
 
 .primary{
@@ -244,12 +245,10 @@ header{
   border-radius:11px;
   margin-top:16px;
   font-weight:bold;
-  cursor:pointer;
 }
 
 .section-title{
   display:flex;
-  align-items:center;
   justify-content:space-between;
   margin:20px 2px 12px;
 }
@@ -275,7 +274,6 @@ header{
   border:1px solid #e7eaf0;
   border-radius:18px;
   padding:15px;
-  position:relative;
   box-shadow:0 5px 15px rgba(0,0,0,.045);
 }
 
@@ -311,7 +309,6 @@ header{
   padding:10px;
   border-radius:9px;
   margin-top:12px;
-  cursor:pointer;
 }
 
 .side-menu{
@@ -336,15 +333,10 @@ header{
   padding:15px;
   text-align:left;
   font-size:14px;
-  cursor:pointer;
 }
 
-.logout{color:#c62828!important}
-
-.loading{
-  text-align:center;
-  padding:20px;
-  color:#667085;
+.logout{
+  color:#c62828!important;
 }
 
 @media(max-width:380px){
@@ -358,40 +350,68 @@ header{
 <body>
 
 <header>
+
   <div class="logo">
+
     <div class="logo-icon">🏗️</div>
+
     <div>
       <div class="logo-text">My Construction</div>
       <div class="logo-sub">Build • Connect • Grow</div>
     </div>
+
   </div>
 
-  <button class="menu-button" onclick="toggleMenu()">☰</button>
+  <button
+    class="menu-button"
+    onclick="toggleMenu()">
+    ☰
+  </button>
+
 </header>
+
 
 <div id="sideMenu" class="side-menu">
 
-  <button onclick="editProfile()">👤 Edit Profile</button>
+  <button onclick="editProfile()">
+    👤 Edit Profile
+  </button>
 
-  <button onclick="myBookings()">📅 My Bookings</button>
+  <button onclick="myBookings()">
+    📅 My Bookings
+  </button>
 
-  <button onclick="notifications()">🔔 Notifications</button>
+  <button onclick="notifications()">
+    🔔 Notifications
+  </button>
 
-  <button onclick="location.reload()">🏠 Dashboard</button>
+  <button onclick="goDashboard()">
+    🏠 Dashboard
+  </button>
 
-  <button onclick="settings()">⚙️ Settings</button>
+  <button onclick="settings()">
+    ⚙️ Settings
+  </button>
 
-  <button class="logout" onclick="logout()">🚪 Logout</button>
+  <button class="logout" onclick="logout()">
+    🚪 Logout
+  </button>
 
 </div>
 
+
 <main class="container">
+
 
 <section class="hero">
 
-  <span class="badge" id="roleBadge">MY CONSTRUCTION</span>
+  <span id="roleBadge" class="badge">
+    MY CONSTRUCTION
+  </span>
 
-  <small id="welcomeText">WELCOME</small>
+  <small id="welcomeText">
+    WELCOME
+  </small>
 
   <h1 id="heroTitle">
     आपके Construction काम का<br>
@@ -412,11 +432,14 @@ header{
       oninput="searchServices()"
     >
 
-    <button class="search-icon">🔍</button>
+    <button class="search-icon">
+      🔍
+    </button>
 
   </div>
 
 </section>
+
 
 <div class="quick-grid">
 
@@ -437,32 +460,41 @@ header{
 
 </div>
 
-<!-- THEKEDAR DASHBOARD -->
 
-<section class="thekedar-panel" id="thekedarPanel">
+<section
+  id="thekedarPanel"
+  class="thekedar-panel">
 
   <h2>👷‍♂️ Thekedar Dashboard</h2>
 
   <p>
-    यहाँ से आप अपनी profile, construction work
-    और client booking requests manage कर सकेंगे।
+    अपने construction work, profile और
+    booking requests को manage करें।
   </p>
 
   <div class="panel-buttons">
 
-    <button class="panel-btn" onclick="editProfile()">
+    <button
+      class="panel-btn"
+      onclick="editProfile()">
       👤 My Profile
     </button>
 
-    <button class="panel-btn" onclick="myBookings()">
+    <button
+      class="panel-btn"
+      onclick="bookingRequests()">
       📅 Booking Requests
     </button>
 
-    <button class="panel-btn" onclick="addWork()">
+    <button
+      class="panel-btn"
+      onclick="addWork()">
       ➕ Add Work
     </button>
 
-    <button class="panel-btn" onclick="myWorks()">
+    <button
+      class="panel-btn"
+      onclick="myWorks()">
       🏗️ My Works
     </button>
 
@@ -470,139 +502,280 @@ header{
 
 </section>
 
-<!-- HOUSE -->
 
 <section class="house">
 
   <div class="house-top">
 
-    <div class="house-icon">🏠</div>
+    <div class="house-icon">
+      🏠
+    </div>
 
     <div>
-      <h2>मेरा घर बनाना है</h2>
+
+      <h2>
+        मेरा घर बनाना है
+      </h2>
 
       <p>
         अपने घर की जानकारी देकर construction
         planning शुरू करें।
       </p>
+
     </div>
 
   </div>
 
-  <button class="primary" onclick="startHousePlanning()">
+  <button
+    class="primary"
+    onclick="startHousePlanning()">
+
     Start My House Planning →
+
   </button>
 
 </section>
 
+
 <div class="section-title">
 
-  <h2>Construction Services</h2>
+  <h2>
+    Construction Services
+  </h2>
 
-  <span>सबसे जरूरी सेवाएँ</span>
+  <span>
+    सबसे जरूरी सेवाएँ
+  </span>
 
 </div>
 
-<div class="service-grid" id="serviceGrid">
+
+<div class="service-grid">
+
 
   <div class="service" data-name="labour">
-    <div class="service-icon">👷</div>
+
+    <div class="service-icon">
+      👷
+    </div>
+
     <h3>Labour</h3>
-    <p>Construction workers</p>
-    <button class="book" onclick="openProfessionals('labour')">
+
+    <p>
+      Construction workers
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('labour')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="thekedar">
-    <div class="service-icon">👷‍♂️</div>
+
+    <div class="service-icon">
+      👷‍♂️
+    </div>
+
     <h3>Thekedar</h3>
-    <p>Construction contractor</p>
-    <button class="book" onclick="openProfessionals('thekedar')">
+
+    <p>
+      Construction contractor
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('thekedar')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="electrician">
-    <div class="service-icon">⚡</div>
+
+    <div class="service-icon">
+      ⚡
+    </div>
+
     <h3>Electrician</h3>
-    <p>Electrical work</p>
-    <button class="book" onclick="openProfessionals('electrician')">
+
+    <p>
+      Electrical work
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('electrician')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="plumber">
-    <div class="service-icon">🚰</div>
+
+    <div class="service-icon">
+      🚰
+    </div>
+
     <h3>Plumber</h3>
-    <p>Plumbing work</p>
-    <button class="book" onclick="openProfessionals('plumber')">
+
+    <p>
+      Plumbing work
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('plumber')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="painter">
-    <div class="service-icon">🎨</div>
+
+    <div class="service-icon">
+      🎨
+    </div>
+
     <h3>Painter</h3>
-    <p>Painting work</p>
-    <button class="book" onclick="openProfessionals('painter')">
+
+    <p>
+      Painting work
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('painter')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="mason">
-    <div class="service-icon">🧱</div>
+
+    <div class="service-icon">
+      🧱
+    </div>
+
     <h3>Mason</h3>
-    <p>Raj Mistri / Mason</p>
-    <button class="book" onclick="openProfessionals('mason')">
+
+    <p>
+      Raj Mistri / Mason
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('mason')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="carpenter">
-    <div class="service-icon">🪚</div>
+
+    <div class="service-icon">
+      🪚
+    </div>
+
     <h3>Carpenter</h3>
-    <p>Wood work</p>
-    <button class="book" onclick="openProfessionals('carpenter')">
+
+    <p>
+      Wood work
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('carpenter')">
+
       Book Now
+
     </button>
+
   </div>
+
 
   <div class="service" data-name="house designer">
-    <div class="service-icon">📐</div>
+
+    <div class="service-icon">
+      📐
+    </div>
+
     <h3>House Designer</h3>
-    <p>House planning & design</p>
-    <button class="book" onclick="openProfessionals('house designer')">
+
+    <p>
+      House planning & design
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('house designer')">
+
       Book Now
+
     </button>
+
   </div>
 
+
   <div class="service" data-name="other">
-    <div class="service-icon">🔧</div>
+
+    <div class="service-icon">
+      🔧
+    </div>
+
     <h3>Other</h3>
-    <p>Other professionals</p>
-    <button class="book" onclick="openProfessionals('other')">
+
+    <p>
+      Other professionals
+    </p>
+
+    <button
+      class="book"
+      onclick="openProfessionals('other')">
+
       Book Now
+
     </button>
+
   </div>
+
 
 </div>
 
 </main>
 
+
 <script>
+
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL =
 "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-/*
-  IMPORTANT:
-  यहाँ अपनी dashboard.html में लगी हुई
-  वही CURRENT PUBLISHABLE KEY रखें।
-*/
 const SUPABASE_KEY =
-"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
-  
+"YOUR_CURRENT_PUBLISHABLE_KEY";
 
 const supabaseClient =
 window.supabase.createClient(
@@ -611,7 +784,9 @@ window.supabase.createClient(
 );
 
 
-/* LOAD USER ROLE */
+/* =========================
+   LOAD USER ROLE
+========================= */
 
 async function loadUser(){
 
@@ -621,47 +796,80 @@ async function loadUser(){
   } = await supabaseClient.auth.getUser();
 
   if(error || !user){
-    window.location.href="index.html";
+
+    window.location.href =
+      "index.html";
+
     return;
   }
 
-  const {data:profile,error:profileError} =
+
+  const {
+    data:profile,
+    error:profileError
+  } =
     await supabaseClient
     .from("Profiles")
     .select("Name,Role")
     .eq("id",user.id)
     .maybeSingle();
 
+
   if(profileError){
+
     console.log(profileError);
+
     return;
   }
+
 
   if(!profile){
+
     return;
   }
 
-  const role =
-    String(profile.Role || "").toLowerCase();
 
   const name =
     profile.Name || "User";
 
-  document.getElementById("welcomeText").innerText =
-    "WELCOME, " + name.toUpperCase();
+  const role =
+    String(profile.Role || "")
+    .trim()
+    .toLowerCase();
+
+
+  document.getElementById(
+    "welcomeText"
+  ).innerText =
+    "WELCOME, " +
+    name.toUpperCase();
+
 
   if(role === "thekedar"){
 
-    document.getElementById("roleBadge").innerText =
+    document.getElementById(
+      "roleBadge"
+    ).innerText =
       "👷‍♂️ THEKEDAR";
 
-    document.getElementById("heroTitle").innerHTML =
-      "Welcome " + escapeHtml(name) + "!<br>Thekedar Dashboard";
 
-    document.getElementById("heroDescription").innerText =
+    document.getElementById(
+      "heroTitle"
+    ).innerHTML =
+      "Welcome " +
+      escapeHtml(name) +
+      "!<br>Thekedar Dashboard";
+
+
+    document.getElementById(
+      "heroDescription"
+    ).innerText =
       "अपने construction work, profile और client booking requests को manage करें।";
 
-    document.getElementById("thekedarPanel").style.display =
+
+    document.getElementById(
+      "thekedarPanel"
+    ).style.display =
       "block";
 
   }
@@ -669,7 +877,9 @@ async function loadUser(){
 }
 
 
-/* SAFE TEXT */
+/* =========================
+   ESCAPE
+========================= */
 
 function escapeHtml(text){
 
@@ -683,12 +893,16 @@ function escapeHtml(text){
 }
 
 
-/* MENU */
+/* =========================
+   MENU
+========================= */
 
 function toggleMenu(){
 
   const menu =
-    document.getElementById("sideMenu");
+    document.getElementById(
+      "sideMenu"
+    );
 
   menu.style.display =
     menu.style.display === "block"
@@ -698,7 +912,113 @@ function toggleMenu(){
 }
 
 
-/* PROFESSIONALS */
+/* =========================
+   PROFILE
+========================= */
+
+function editProfile(){
+
+  window.location.href =
+    "profile.html";
+
+}
+
+
+/* =========================
+   BOOKINGS
+========================= */
+
+function myBookings(){
+
+  window.location.href =
+    "bookings.html";
+
+}
+
+
+function bookingRequests(){
+
+  window.location.href =
+    "bookings.html";
+
+}
+
+
+/* =========================
+   ADD WORK
+========================= */
+
+function addWork(){
+
+  window.location.href =
+    "add-work.html";
+
+}
+
+
+/* =========================
+   MY WORKS
+========================= */
+
+function myWorks(){
+
+  window.location.href =
+    "my-works.html";
+
+}
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+function notifications(){
+
+  window.location.href =
+    "notifications.html";
+
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function settings(){
+
+  window.location.href =
+    "settings.html";
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function goDashboard(){
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+/* =========================
+   HOUSE PLANNING
+========================= */
+
+function startHousePlanning(){
+
+  window.location.href =
+    "house-planning.html";
+
+}
+
+
+/* =========================
+   PROFESSIONALS
+========================= */
 
 function openProfessionals(category){
 
@@ -709,59 +1029,9 @@ function openProfessionals(category){
 }
 
 
-/* PROFILE */
-
-function editProfile(){
-
-  alert("👤 Profile Management अगले step में connect किया जाएगा।");
-
-}
-
-
-/* BOOKINGS */
-
-function myBookings(){
-
-  alert("📅 Booking Management अगले step में connect किया जाएगा।");
-
-}
-
-
-/* NOTIFICATIONS */
-
-function notifications(){
-
-  alert("🔔 Notifications अगले step में connect किए जाएंगे।");
-
-}
-
-
-/* SETTINGS */
-
-function addWork(){
-  window.location.href = "add-work.html";
-}
-
-
-/* ADD WORK */
-
-function addWork(){
-
-  alert("➕ Add Work feature अगले step में बनाया जाएगा।");
-
-}
-
-
-/* MY WORKS */
-
-function myWorks(){
-
-  alert("🏗️ My Works feature अगले step में बनाया जाएगा।");
-
-}
-
-
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 function searchServices(){
 
@@ -772,13 +1042,20 @@ function searchServices(){
     .toLowerCase()
     .trim();
 
+
   const services =
-    document.querySelectorAll(".service");
+    document.querySelectorAll(
+      ".service"
+    );
+
 
   services.forEach(service => {
 
     const name =
-      service.getAttribute("data-name");
+      service.getAttribute(
+        "data-name"
+      );
+
 
     service.style.display =
       name.includes(value)
@@ -790,29 +1067,38 @@ function searchServices(){
 }
 
 
-/* HOUSE */
-
-function startHousePlanning(){
-
-  alert(
-    "🏠 House Planning feature अगले step में बनाया जाएगा।"
-  );
-
-}
-
-
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
 
 async function logout(){
 
-  await supabaseClient.auth.signOut();
+  const {error} =
+    await supabaseClient
+    .auth
+    .signOut();
 
-  window.location.href="index.html";
+
+  if(error){
+
+    alert(
+      "Logout नहीं हुआ: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  window.location.href =
+    "index.html";
 
 }
 
 
-/* START */
+/* =========================
+   START
+========================= */
 
 loadUser();
 
