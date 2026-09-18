@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Labour Applications - My Construction</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#222;
+}
+
+.header{
+  background:#111827;
+  color:white;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header h2{
+  margin:0;
+  font-size:19px;
+}
+
+.back{
+  color:white;
+  text-decoration:none;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:18px;
+}
+
+.card{
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  margin-bottom:15px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.work-title{
+  font-size:19px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.labour-name{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.info{
+  color:#555;
+  font-size:14px;
+  margin:7px 0;
+}
+
+.status{
+  display:inline-block;
+  padding:6px 11px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.pending{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.accepted{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.rejected{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+
+.buttons button{
+  flex:1;
+  border:0;
+  padding:11px;
+  border-radius:10px;
+  color:white;
+  font-weight:bold;
+}
+
+.accept{
+  background:#16a34a;
+}
+
+.reject{
+  background:#dc2626;
+}
+
+.message{
+  text-align:center;
+  padding:30px 10px;
+}
+
+.error{
+  color:#dc2626;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+  <h2>🏗️ My Construction</h2>
+
+  <a class="back" href="dashboard.html">
+    ← Dashboard
+  </a>
+
+</div>
+
+
+<div class="container">
+
+  <h3>📩 Labour Applications</h3>
+
+  <div id="applications">
+
+    <div class="message">
+      ⏳ Applications load हो रही हैं...
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+"YOUR_CURRENT_PUBLISHABLE_KEY";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+async function loadApplications(){
+
+  const box =
+    document.getElementById("applications");
+
+  try{
+
+    const userResult =
+      await supabaseClient.auth.getUser();
+
+    const user =
+      userResult.data.user;
+
+
+    if(!user){
+
+      box.innerHTML = `
+        <div class="message error">
+          ❌ पहले Thekedar account से Login करें।
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /*
+      पहले Thekedar के Works निकालेंगे
+    */
+
+    const worksResult =
+      await supabaseClient
+      .from("Works")
+      .select("id,Title")
+      .eq("thekedar_id",user.id);
+
+
+    if(worksResult.error){
+
+      box.innerHTML = `
+        <div class="message error">
+          ❌ Works load नहीं हुए।<br><br>
+          ${safe(worksResult.error.message)}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const works =
+      worksResult.data || [];
+
+
+    if(works.length === 0){
+
+      box.innerHTML = `
+        <div class="message">
+          📭 आपने अभी कोई Work Publish नहीं किया है।
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const workIds =
+      works.map(function(work){
+        return work.id;
+      });
+
+
+    /*
+      अब उन Works की Applications निकालेंगे
+    */
+
+    const applicationsResult =
+      await supabaseClient
+      .from("job_applications")
+      .select("*")
+      .in("work_id",workIds)
+      .order("applied_at",{ascending:false});
+
+
+    if(applicationsResult.error){
+
+      box.innerHTML = `
+        <div class="message error">
+          ❌ Applications load नहीं हुईं।<br><br>
+          ${safe(applicationsResult.error.message)}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const applications =
+      applicationsResult.data || [];
+
+
+    if(applications.length === 0){
+
+      box.innerHTML = `
+        <div class="message">
+          📭 अभी किसी Labour ने आपके Work के लिए Apply नहीं किया है।
+        </div>
+      `;
+
+      return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    applications.forEach(function(application){
+
+      const work =
+        works.find(function(item){
+          return item.id === application.work_id;
+        });
+
+
+      /*
+        Labour profile निकालना
+      */
+
+      const card =
+        document.createElement("div");
+
+      card.className="card";
+
+
+      card.innerHTML = `
+
+        <div class="work-title">
+          🏗️ Work:
+          ${safe(work ? work.Title : "Work")}
+        </div>
+
+        <div class="labour-name">
+          👷 Labour
+        </div>
+
+        <div class="info">
+          🆔 Labour ID:
+          ${safe(application.labour_id)}
+        </div>
+
+        <div class="info">
+          📝 Message:
+          ${safe(application.message || "कोई message नहीं")}
+        </div>
+
+        <div class="info">
+          📅 Applied:
+          ${safe(application.applied_at || "-")}
+        </div>
+
+        <div class="status ${getStatusClass(application.status)}">
+          ${getStatusText(application.status)}
+        </div>
+
+        ${
+          application.status === "pending"
+          ?
+          `
+          <div class="buttons">
+
+            <button
+              class="accept"
+              onclick="updateApplication(
+                '${application.id}',
+                'accepted'
+              )">
+
+              ✅ Accept
+
+            </button>
+
+            <button
+              class="reject"
+              onclick="updateApplication(
+                '${application.id}',
+                'rejected'
+              )">
+
+              ❌ Reject
+
+            </button>
+
+          </div>
+          `
+          :
+          ""
+        }
+
+      `;
+
+
+      box.appendChild(card);
+
+    });
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    box.innerHTML = `
+      <div class="message error">
+        ❌ Error आया।<br><br>
+        ${safe(error.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+
+async function updateApplication(
+  applicationId,
+  newStatus
+){
+
+  const action =
+    newStatus === "accepted"
+    ? "Accept"
+    : "Reject";
+
+
+  const confirmAction =
+    confirm(
+      "क्या आप इस Labour application को " +
+      action +
+      " करना चाहते हैं?"
+    );
+
+
+  if(!confirmAction){
+
+    return;
+
+  }
+
+
+  const result =
+    await supabaseClient
+    .from("job_applications")
+    .update({
+      status:newStatus,
+      updated_at:new Date().toISOString()
+    })
+    .eq("id",applicationId);
+
+
+  if(result.error){
+
+    alert(
+      "❌ Status update नहीं हुआ:\n\n" +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    newStatus === "accepted"
+    ? "✅ Labour Application Accept हो गई!"
+    : "❌ Labour Application Reject हो गई!"
+  );
+
+
+  loadApplications();
+
+}
+
+
+
+function getStatusClass(status){
+
+  if(status === "accepted"){
+    return "accepted";
+  }
+
+  if(status === "rejected"){
+    return "rejected";
+  }
+
+  return "pending";
+
+}
+
+
+
+function getStatusText(status){
+
+  if(status === "accepted"){
+    return "✅ ACCEPTED";
+  }
+
+  if(status === "rejected"){
+    return "❌ REJECTED";
+  }
+
+  return "🟡 PENDING";
+
+}
+
+
+
+function safe(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+
+    return "-";
+
+  }
+
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+loadApplications();
+
+</script>
+
+</body>
+</html>
