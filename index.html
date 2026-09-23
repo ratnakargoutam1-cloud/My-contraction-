@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,89 +9,52 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
+      background: #f5f5f5;
       margin: 0;
       padding: 20px;
     }
 
     .container {
       max-width: 420px;
-      margin: 30px auto;
+      margin: 40px auto;
       background: white;
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 50px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
     }
 
     h1 {
       text-align: center;
       color: #222;
-      margin-bottom: 25px;
     }
 
-    h2 {
-      text-align: center;
-    }
-
-    input,
-    select,
-    button {
+    input, select, button {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       margin-top: 10px;
-      border-radius: 8px;
+      box-sizing: border-box;
+      border-radius: 7px;
+      border: 1px solid #ccc;
       font-size: 16px;
     }
 
-    input,
-    select {
-      border: 1px solid #ccc;
-      background: white;
-    }
-
     button {
-      border: none;
-      background: #1976d2;
+      background: #222;
       color: white;
+      border: none;
       cursor: pointer;
     }
 
     button:hover {
-      background: #125ca3;
+      background: #444;
     }
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .tabs button {
-      margin-top: 0;
-    }
-
-    #loginBox {
-      display: none;
-    }
-
-    .message {
-      display: none;
+    #message {
       margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
       text-align: center;
-      background: #eef3f7;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -100,290 +63,118 @@
 
   <div class="container">
 
-    <div class="logo">🏗️</div>
-
     <h1>My Construction</h1>
 
-    <div class="tabs">
-      <button type="button" onclick="showSignup()">Signup</button>
-      <button type="button" onclick="showLogin()">Login</button>
-    </div>
+    <h2>Sign Up</h2>
 
-    <!-- SIGNUP -->
-    <div id="signupBox">
+    <input
+      type="text"
+      id="name"
+      placeholder="Full Name"
+    >
 
-      <h2>Create Account</h2>
+    <input
+      type="tel"
+      id="mobile"
+      placeholder="Mobile Number"
+    >
 
-      <input
-        type="text"
-        id="signupName"
-        placeholder="आपका नाम"
-      >
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+    >
 
-      <input
-        type="tel"
-        id="signupMobile"
-        placeholder="Mobile Number"
-      >
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
 
-      <input
-        type="email"
-        id="signupEmail"
-        placeholder="Email"
-      >
+    <select id="role">
+      <option value="labour">Labour</option>
+      <option value="thekedar">Thekedar / Contractor</option>
+    </select>
 
-      <input
-        type="password"
-        id="signupPassword"
-        placeholder="Password"
-      >
+    <button onclick="signup()">
+      Create Account
+    </button>
 
-      <select id="signupRole">
-        <option value="">Role चुनें</option>
-        <option value="labour">Labour</option>
-        <option value="thekedar">Thekedar</option>
-        <option value="client">Client</option>
-      </select>
-
-      <button type="button" onclick="signup()">
-        Create Account
-      </button>
-
-      <div id="signupMessage" class="message"></div>
-
-    </div>
-
-
-    <!-- LOGIN -->
-    <div id="loginBox">
-
-      <h2>Login</h2>
-
-      <input
-        type="email"
-        id="loginEmail"
-        placeholder="Email"
-      >
-
-      <input
-        type="password"
-        id="loginPassword"
-        placeholder="Password"
-      >
-
-      <button type="button" onclick="login()">
-        Login
-      </button>
-
-      <div id="loginMessage" class="message"></div>
-
-    </div>
+    <p id="message"></p>
 
   </div>
 
-
   <script>
 
-    // =========================
-    // SUPABASE
-    // =========================
+    const SUPABASE_URL = "https://xuzgsqaryonlvdwthapz.supabase.co";
 
-    const SUPABASE_URL =
-      "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+    const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
 
-    const SUPABASE_KEY =
-      "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-
-    // =========================
-    // SHOW SIGNUP
-    // =========================
-
-    function showSignup() {
-      document.getElementById("signupBox").style.display = "block";
-      document.getElementById("loginBox").style.display = "none";
-    }
-
-
-    // =========================
-    // SHOW LOGIN
-    // =========================
-
-    function showLogin() {
-      document.getElementById("signupBox").style.display = "none";
-      document.getElementById("loginBox").style.display = "block";
-    }
-
-
-    // =========================
-    // SIGNUP
-    // =========================
 
     async function signup() {
 
-      const name =
-        document.getElementById("signupName").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+      const message = document.getElementById("message");
 
-      const mobile =
-        document.getElementById("signupMobile").value.trim();
-
-      const email =
-        document.getElementById("signupEmail").value.trim();
-
-      const password =
-        document.getElementById("signupPassword").value;
-
-      const role =
-        document.getElementById("signupRole").value;
-
-      const message =
-        document.getElementById("signupMessage");
-
-      message.style.display = "block";
-
-
-      if (!name || !mobile || !email || !password || !role) {
-        message.innerText =
-          "⚠️ कृपया सभी जानकारी भरें।";
+      if (!name || !mobile || !email || !password) {
+        message.textContent = "Please fill all fields.";
         return;
       }
 
-
-      if (password.length < 6) {
-        message.innerText =
-          "⚠️ Password कम से कम 6 characters का होना चाहिए।";
-        return;
-      }
-
-
-      message.innerText =
-        "⏳ Account बनाया जा रहा है...";
-
+      message.textContent = "Creating account...";
 
       try {
 
-        const { data, error } =
-          await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-          });
-
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password
+        });
 
         if (error) {
-          message.innerText =
-            "❌ " + error.message;
+          message.textContent = error.message;
           return;
         }
-
 
         if (!data.user) {
-          message.innerText =
-            "❌ Account create नहीं हुआ।";
+          message.textContent = "Signup failed.";
           return;
         }
 
-
-        const { error: profileError } =
-          await supabaseClient
-            .from("Profiles")
-            .insert({
-              id: data.user.id,
-              Role: role,
-              Name: name,
-              Mobile: mobile
-            });
-
-
-        if (profileError) {
-          message.innerText =
-            "⚠️ Account बन गया, लेकिन Profile save नहीं हुई: "
-            + profileError.message;
-          return;
-        }
-
-
-        message.innerText =
-          "✅ Account successfully created!";
-
-
-      } catch (err) {
-
-        message.innerText =
-          "❌ Connection error: " + err.message;
-
-      }
-    }
-
-
-    // =========================
-    // LOGIN
-    // =========================
-
-    async function login() {
-
-      const email =
-        document.getElementById("loginEmail").value.trim();
-
-      const password =
-        document.getElementById("loginPassword").value;
-
-      const message =
-        document.getElementById("loginMessage");
-
-      message.style.display = "block";
-
-
-      if (!email || !password) {
-        message.innerText =
-          "⚠️ Email और Password भरें।";
-        return;
-      }
-
-
-      message.innerText =
-        "⏳ Login हो रहा है...";
-
-
-      try {
-
-        const { data, error } =
-          await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
+        const { error: profileError } = await supabaseClient
+          .from("Profiles")
+          .insert({
+            id: data.user.id,
+            name: name,
+            mobile: mobile,
+            role: role
           });
 
-
-        if (error) {
-          message.innerText =
-            "❌ " + error.message;
+        if (profileError) {
+          message.textContent =
+            "Account created, but profile could not be saved: " +
+            profileError.message;
           return;
         }
 
-
-        if (data.session) {
-
-          message.innerText =
-            "✅ Login successful!";
-
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 500);
-
-        }
-
+        message.textContent =
+          "Account created successfully!";
 
       } catch (err) {
 
-        message.innerText =
-          "❌ Connection error: " + err.message;
+        message.textContent =
+          "Error: " + err.message;
 
       }
+
     }
 
   </script>
